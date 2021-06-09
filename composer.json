@@ -5,7 +5,7 @@
     "keywords": [
         "ENV",
         "environment",
-	".env file"
+        ".env file"
     ],
     "homepage": "https://github.com/pthreat/ldl-env-util",
     "license": "MIT",
@@ -16,17 +16,22 @@
         },
         {
             "name": "Gonzalo Coda",
-            "email": "gonzalocoda@gmail.com"
+            "email": "gonzalocoda@hotmail.com"
         }
     ],
     "minimum-stability": "dev",
     "prefer-stable": true,
     "require": {
-        "php": ">=7.3"
+        "php": ">=7.3",
+        "ext-json": "*",
+        "symfony/string": "^5.1",
+        "ldl-framework/file-common": "dev-master",
+        "ldl-framework/framework-base": "dev-master",
+        "ldl-framework/typed-collection": "dev-master"
     },
     "autoload": {
         "psr-4": {
-            "LDL\\Env\\Util\\": "src/"
+            "LDL\\Env\\Util\\": "src/Env/Util/"
         }
     }
 }
