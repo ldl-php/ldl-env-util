@@ -19,12 +19,16 @@ class EnvLineParserCollection extends ObjectCollection implements EnvLineParserC
     {
         parent::__construct($items);
         $this->getAppendValueValidatorChain()
+            ->getChainItems()
             ->append(new InterfaceComplianceValidator(EnvLineParserInterface::class))
             ->lock();
 
         $this->getAppendKeyValidatorChain()
-            ->append(new IntegerValidator())
-            ->append(new UniqueValidator())
+            ->getChainItems()
+            ->appendMany([
+                new IntegerValidator(),
+                new UniqueValidator()
+            ])
             ->lock();
     }
 

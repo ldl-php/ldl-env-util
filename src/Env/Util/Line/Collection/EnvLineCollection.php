@@ -28,12 +28,16 @@ class EnvLineCollection extends ObjectCollection implements EnvLineCollectionInt
     {
         parent::__construct($items);
         $this->getAppendValueValidatorChain()
+            ->getChainItems()
             ->append(new InterfaceComplianceValidator(EnvLineInterface::class))
             ->lock();
 
         $this->getAppendKeyValidatorChain()
-            ->append(new IntegerValidator())
-            ->append(new UniqueValidator())
+            ->getChainItems()
+            ->appendMany([
+                new IntegerValidator(),
+                new UniqueValidator()
+            ])
             ->lock();
     }
 
