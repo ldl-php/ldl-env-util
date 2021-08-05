@@ -15,14 +15,13 @@ use LDL\Env\Util\Line\Type\Variable\Parser\EnvLineVarParser;
 
 echo "Create Parser Collection\n";
 
-$parserCollection = new EnvLineParserCollection(
-    new EnvLineParserCollection([
-        new EnvLineCommentParser(),
-        new EnvLineDirectiveParser(),
-        new EnvEmptyLineParser(),
-        new EnvLineVarParser()
-    ])
-);
+$parserCollection = new EnvLineParserCollection([
+    new EnvLineCommentParser(),
+    new EnvLineDirectiveParser(),
+    new EnvEmptyLineParser(),
+    new EnvLineVarParser()
+]);
+
 
 echo "Create some lines\n";
 $lines = [
@@ -31,7 +30,7 @@ $lines = [
     '',
     '#COMMENT LINE',
     '!LDL-ENV PARSER={"ignore": true}',
-    'THIS_VARIABLE_MUST_NOT_BE_VISIBLE=Administration'
+    'THIS_VARIABLE_MUST_BE_VISIBLE=Administration'
 ];
 
 echo "Create EnvLineCollection\n";
@@ -49,6 +48,11 @@ $compiler = new EnvCompiler(
         'varNameToUpperCase' => false
     ])
 );
+
+
+/**
+ * We don't use EnvParser in this example, so it doesn't matter if there are directive lines or not
+ */
 
 echo "Compile EnvLineCollection\n";
 $compiledLines = $compiler->compile($envLineCollection);
