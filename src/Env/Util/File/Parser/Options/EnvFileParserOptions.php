@@ -39,7 +39,7 @@ class EnvFileParserOptions implements EnvFileParserOptionsInterface
         $this->ignore = $ignore;
     }
 
-    public function toArray() : array
+    public function toArray(bool $useKeys=null) : array
     {
         return get_object_vars($this);
     }

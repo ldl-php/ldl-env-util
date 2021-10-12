@@ -3,10 +3,10 @@
 namespace LDL\Env\Util\Line\Collection;
 
 use LDL\Env\Util\Line\Type\Variable\EnvLineVarInterface;
-use LDL\Framework\Base\Collection\Contracts\ReplaceableInterface;
+use LDL\Framework\Base\Collection\Contracts\ReplaceByKeyInterface;
 use LDL\Type\Collection\Interfaces\Validation\HasAppendKeyValidatorChainInterface;
 
-interface EnvLineCollectionInterface extends HasAppendKeyValidatorChainInterface, ReplaceableInterface, \Stringable
+interface EnvLineCollectionInterface extends HasAppendKeyValidatorChainInterface, ReplaceByKeyInterface, \Stringable
 {
     /**
      * @param string $variable

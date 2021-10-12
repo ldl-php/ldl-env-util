@@ -5,7 +5,7 @@ namespace LDL\Env\Util\Line\Collection;
 use LDL\Env\Util\Line\EnvLineInterface;
 use LDL\Env\Util\Line\Type\Variable\EnvLineVarInterface;
 use LDL\Framework\Base\Collection\Contracts\CollectionInterface;
-use LDL\Framework\Base\Collection\Traits\ReplaceableInterfaceTrait;
+use LDL\Framework\Base\Collection\Traits\ReplaceByKeyInterfaceTrait;
 use LDL\Type\Collection\Traits\Validator\AppendKeyValidatorChainTrait;
 use LDL\Type\Collection\Traits\Validator\AppendValueValidatorChainTrait;
 use LDL\Type\Collection\Types\Object\ObjectCollection;
@@ -17,7 +17,7 @@ class EnvLineCollection extends ObjectCollection implements EnvLineCollectionInt
 {
     use AppendValueValidatorChainTrait;
     use AppendKeyValidatorChainTrait;
-    use ReplaceableInterfaceTrait;
+    use ReplaceByKeyInterfaceTrait;
 
     /**
      * @var array

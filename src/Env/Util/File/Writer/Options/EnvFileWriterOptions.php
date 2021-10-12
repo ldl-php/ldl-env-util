@@ -27,7 +27,7 @@ class EnvFileWriterOptions implements EnvFileWriterOptionsInterface
         $this->filename = $filename ?? self::DEFAULT_FILENAME;
     }
 
-    public function toArray() : array
+    public function toArray(bool $useKeys=null) : array
     {
         return get_object_vars($this);
     }

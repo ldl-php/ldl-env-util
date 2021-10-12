@@ -61,9 +61,10 @@ class EnvCompilerOptions implements EnvCompilerOptionsInterface
     }
 
     /**
+     * @param bool|null $useKeys
      * @return array
      */
-    public function toArray() : array
+    public function toArray(bool $useKeys=null) : array
     {
         return get_object_vars($this);
     }
