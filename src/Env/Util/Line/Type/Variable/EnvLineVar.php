@@ -36,17 +36,13 @@ class EnvLineVar extends AbstractEnvLine implements EnvLineVarInterface
     {
         parent::__construct($string);
         $this->var = $var;
-        $this->value = $value;
+        $this->value = trim($value,"\r\n");
         $this->prefix = $prefix;
     }
 
     public function getVar(bool $withPrefix = true) : string
     {
-        if('' === $this->prefix){
-            return $this->var;
-        }
-
-        return true === $withPrefix ? sprintf('%s%s', $this->prefix, $this->var) : $this->var;
+        return sprintf('%s%s', $withPrefix ? $this->prefix : '', $this->var);
     }
 
     public function getValue(bool $cast=true)
@@ -89,16 +85,6 @@ class EnvLineVar extends AbstractEnvLine implements EnvLineVarInterface
     public function getPrefix(): ?string
     {
         return $this->prefix;
-    }
-
-    public function toUpperCase(): EnvLineVarInterface
-    {
-        return new self(
-            $this->getString(),
-            (new UnicodeString($this->var))->upper()->toString(),
-            $this->value,
-            (new UnicodeString($this->prefix))->upper()->toString(),
-        );
     }
 
     public function __toString(): string

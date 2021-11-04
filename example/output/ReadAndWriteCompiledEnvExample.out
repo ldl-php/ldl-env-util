@@ -1,0 +1,27 @@
+Parse env files
+Compile parsed lines
+Write compiled file
+[ STATUS: Finished OK!]
+
+#Taken from: /home/ldl/ldl-project/ldl-env-utils/example/Application/Admin/.env
+
+#!LDL-ENV COMPILER={"varNameToUpperCase": true}
+
+
+APPLICATION_ADMIN_APP_ADMIN_URL=http://localhost:8080
+
+
+#!LDL-ENV COMPILER={"varNameToUpperCase": false}
+
+
+APPLICATION_ADMIN_MAINTENANCE_MODE=0
+
+#!LDL-ENV PARSER={"ignore": true}
+
+
+#IGNORED LINES FROM LINE 7 ONWARDS (see parser options above)
+
+#Taken from: /home/ldl/ldl-project/ldl-env-utils/example/Application/User/.env
+
+APPLICATION_USER_APP_USER_URL=http://localhost:8080
+APPLICATION_USER_MAINTENANCE_MODE=1

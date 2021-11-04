@@ -5,19 +5,17 @@ namespace LDL\Env\Util\Line\Collection;
 use LDL\Env\Util\Line\EnvLineInterface;
 use LDL\Env\Util\Line\Type\Variable\EnvLineVarInterface;
 use LDL\Framework\Base\Collection\Contracts\CollectionInterface;
-use LDL\Framework\Base\Collection\Traits\ReplaceableInterfaceTrait;
+use LDL\Type\Collection\AbstractTypedCollection;
 use LDL\Type\Collection\Traits\Validator\AppendKeyValidatorChainTrait;
 use LDL\Type\Collection\Traits\Validator\AppendValueValidatorChainTrait;
-use LDL\Type\Collection\Types\Object\ObjectCollection;
 use LDL\Type\Collection\Validator\UniqueValidator;
 use LDL\Validators\IntegerValidator;
 use LDL\Validators\InterfaceComplianceValidator;
 
-class EnvLineCollection extends ObjectCollection implements EnvLineCollectionInterface
+class EnvLineCollection extends AbstractTypedCollection implements EnvLineCollectionInterface
 {
     use AppendValueValidatorChainTrait;
     use AppendKeyValidatorChainTrait;
-    use ReplaceableInterfaceTrait;
 
     /**
      * @var array
@@ -26,7 +24,6 @@ class EnvLineCollection extends ObjectCollection implements EnvLineCollectionInt
 
     public function __construct(iterable $items = null)
     {
-        parent::__construct($items);
         $this->getAppendValueValidatorChain()
             ->getChainItems()
             ->append(new InterfaceComplianceValidator(EnvLineInterface::class))
@@ -39,6 +36,8 @@ class EnvLineCollection extends ObjectCollection implements EnvLineCollectionInt
                 new UniqueValidator()
             ])
             ->lock();
+
+        parent::__construct($items);
     }
 
     public function append($line, $key = null): CollectionInterface
@@ -66,25 +65,50 @@ class EnvLineCollection extends ObjectCollection implements EnvLineCollectionInt
         return array_key_exists($variable, $this->vars);
     }
 
-    public function replaceVar(EnvLineVarInterface $var) : EnvLineCollectionInterface
+    public function countVar(string $variable): int
     {
-        foreach($this as $k => $line){
-            if(!$line instanceof EnvLineVarInterface){
+        $count = 0;
+
+        foreach ($this as $k => $line) {
+            if (!$line instanceof EnvLineVarInterface) {
                 continue;
             }
 
-            if($line->getVar() === $var->getVar()){
-                $this->vars[$line->getVar()] = $var->getValue();
-                $this->setItem($var, $k);
+            if($line->getVar() === $variable) {
+                $count++;
             }
+        }
+
+        return $count;
+    }
+
+    public function replaceVar(EnvLineVarInterface $var) : EnvLineCollectionInterface
+    {
+
+        $this->replaceByCallback(static function($v, $k) use ($var){
+            return $v->getVar() === $var->getVar();
+        }, $var);
+
+        return $this;
+    }
+
+    public function merge(EnvLineCollectionInterface $lines) : EnvLineCollectionInterface
+    {
+        foreach($lines as $line){
+            $this->append($line);
         }
 
         return $this;
     }
 
-    public function __toString(): string
+    public function toString(): string
     {
         return implode(\PHP_EOL,\iterator_to_array($this));
+    }
+
+    public function __toString(): string
+    {
+        return $this->toString();
     }
 
 }

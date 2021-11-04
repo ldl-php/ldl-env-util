@@ -3,19 +3,16 @@
 namespace LDL\Env\Util\File\Parser;
 
 use LDL\Env\Util\Line\Collection\EnvLineCollectionInterface;
+use LDL\Env\Util\Parser\EnvParserInterface;
 use LDL\File\Collection\ReadableFileCollection;
 
-interface EnvFileParserInterface
+interface EnvFileParserInterface extends EnvParserInterface
 {
     /**
      * @param ReadableFileCollection $files
-     * @param Options\EnvFileParserOptionsInterface $options
      * @return EnvLineCollectionInterface
      */
-    public function parse(
-        ReadableFileCollection $files,
-        Options\EnvFileParserOptionsInterface $options=null
-    ) : EnvLineCollectionInterface;
+    public function parse(iterable $files) : EnvLineCollectionInterface;
 
     /**
      * @return Options\EnvFileParserOptionsInterface

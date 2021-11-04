@@ -3,10 +3,10 @@
 namespace LDL\Env\Util\Line\Collection;
 
 use LDL\Env\Util\Line\Type\Variable\EnvLineVarInterface;
-use LDL\Framework\Base\Collection\Contracts\ReplaceableInterface;
-use LDL\Type\Collection\Interfaces\Validation\HasAppendKeyValidatorChainInterface;
+use LDL\Framework\Base\Contracts\Type\ToStringInterface;
+use LDL\Type\Collection\TypedCollectionInterface;
 
-interface EnvLineCollectionInterface extends HasAppendKeyValidatorChainInterface, ReplaceableInterface, \Stringable
+interface EnvLineCollectionInterface extends TypedCollectionInterface, ToStringInterface
 {
     /**
      * @param string $variable
@@ -15,8 +15,23 @@ interface EnvLineCollectionInterface extends HasAppendKeyValidatorChainInterface
     public function hasVar(string $variable): bool;
 
     /**
+     * @param string $variable
+     * @return int
+     */
+    public function countVar(string $variable) : int;
+
+    /**
      * @param EnvLineVarInterface $var
      * @return EnvLineCollectionInterface
      */
     public function replaceVar(EnvLineVarInterface $var) : EnvLineCollectionInterface;
+
+    /**
+     * Merges a line collection inside of another collection
+     *
+     * @param EnvLineCollectionInterface $lines
+     * @return EnvLineCollectionInterface
+     */
+    public function merge(EnvLineCollectionInterface $lines) : EnvLineCollectionInterface;
+
 }

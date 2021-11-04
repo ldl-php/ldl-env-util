@@ -23,8 +23,4 @@ interface EnvLineVarInterface extends EnvLineInterface
      */
     public function getValue(bool $cast=true);
 
-    /**
-     * @return EnvLineVarInterface
-     */
-    public function toUpperCase() : EnvLineVarInterface;
 }

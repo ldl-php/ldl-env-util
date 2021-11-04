@@ -1,0 +1,9 @@
+Create Parser Collection
+Create some lines
+Create EnvLineCollection
+Parse each string line and added to EnvLineCollection
+Create EnvCompiler with option 'isVarNameToUpperCase: false'
+Compile EnvLineCollection
+Create EnvWriter
+Write an .env-compiled file
+OK!

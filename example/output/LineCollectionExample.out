@@ -1,0 +1,147 @@
+Create line parsers
+Create COMMENT line
+Create DIRECTIVE Line
+Create EMPTY line
+Create VAR line
+Create another VAR line
+Create EnvLineCollection
+Add lines to EnvLineCollection
+Check items in EnvLineCollection
+Line: #START FILE
+Line: !LDL-ENV COMPILER={"varNameToUpperCase": true}
+Line:
+Line: App_Admin_URL=(string)http://localhost:8080\r\n
+Line: MAINTENANCE_MODE=(int)0
+EnvLineCollection toArray
+array(5) {
+  [0]=>
+  object(LDL\Env\Util\Line\Type\Comment\EnvLineComment)#6 (1) {
+    ["value":"LDL\Env\Util\Line\Type\AbstractEnvLine":private]=>
+    string(11) "#START FILE"
+  }
+  [1]=>
+  object(LDL\Env\Util\Line\Type\Directive\EnvDirective)#7 (3) {
+    ["compilerOptions":"LDL\Env\Util\Line\Type\Directive\EnvDirective":private]=>
+    object(LDL\Env\Util\Compiler\Options\EnvCompilerOptions)#8 (7) {
+      ["allowVariableOverwrite":"LDL\Env\Util\Compiler\Options\EnvCompilerOptions":private]=>
+      bool(false)
+      ["addPrefix":"LDL\Env\Util\Compiler\Options\EnvCompilerOptions":private]=>
+      bool(true)
+      ["varNameToUpperCase":"LDL\Env\Util\Compiler\Options\EnvCompilerOptions":private]=>
+      bool(true)
+      ["commentsEnabled":"LDL\Env\Util\Compiler\Options\EnvCompilerOptions":private]=>
+      bool(true)
+      ["onBeforeCompile":"LDL\Env\Util\Compiler\Options\EnvCompilerOptions":private]=>
+      NULL
+      ["onCompile":"LDL\Env\Util\Compiler\Options\EnvCompilerOptions":private]=>
+      NULL
+      ["onAfterCompile":"LDL\Env\Util\Compiler\Options\EnvCompilerOptions":private]=>
+      NULL
+    }
+    ["parserOptions":"LDL\Env\Util\Line\Type\Directive\EnvDirective":private]=>
+    NULL
+    ["value":"LDL\Env\Util\Line\Type\AbstractEnvLine":private]=>
+    string(46) "!LDL-ENV COMPILER={"varNameToUpperCase": true}"
+  }
+  [2]=>
+  object(LDL\Env\Util\Line\Type\EmptyLine\EnvEmptyLine)#9 (1) {
+    ["value":"LDL\Env\Util\Line\Type\AbstractEnvLine":private]=>
+    string(0) ""
+  }
+  [3]=>
+  object(LDL\Env\Util\Line\Type\Variable\EnvLineVar)#12 (5) {
+    ["var":"LDL\Env\Util\Line\Type\Variable\EnvLineVar":private]=>
+    string(13) "App_Admin_URL"
+    ["value":"LDL\Env\Util\Line\Type\Variable\EnvLineVar":private]=>
+    string(31) "(string)http://localhost:8080
+"
+    ["castedValue":"LDL\Env\Util\Line\Type\Variable\EnvLineVar":private]=>
+    string(23) "http://localhost:8080
+"
+    ["prefix":"LDL\Env\Util\Line\Type\Variable\EnvLineVar":private]=>
+    string(0) ""
+    ["value":"LDL\Env\Util\Line\Type\AbstractEnvLine":private]=>
+    string(47) "App_Admin_URL=(string)http://localhost:8080\r\n"
+  }
+  [4]=>
+  object(LDL\Env\Util\Line\Type\Variable\EnvLineVar)#11 (5) {
+    ["var":"LDL\Env\Util\Line\Type\Variable\EnvLineVar":private]=>
+    string(16) "MAINTENANCE_MODE"
+    ["value":"LDL\Env\Util\Line\Type\Variable\EnvLineVar":private]=>
+    string(6) "(int)0"
+    ["castedValue":"LDL\Env\Util\Line\Type\Variable\EnvLineVar":private]=>
+    int(0)
+    ["prefix":"LDL\Env\Util\Line\Type\Variable\EnvLineVar":private]=>
+    string(0) ""
+    ["value":"LDL\Env\Util\Line\Type\AbstractEnvLine":private]=>
+    string(23) "MAINTENANCE_MODE=(int)0"
+  }
+}
+OK!
+Change (replace) MAINTENANCE_MODE 0 to 1
+EnvLineCollection toArray
+array(5) {
+  [0]=>
+  object(LDL\Env\Util\Line\Type\Comment\EnvLineComment)#6 (1) {
+    ["value":"LDL\Env\Util\Line\Type\AbstractEnvLine":private]=>
+    string(11) "#START FILE"
+  }
+  [1]=>
+  object(LDL\Env\Util\Line\Type\Directive\EnvDirective)#7 (3) {
+    ["compilerOptions":"LDL\Env\Util\Line\Type\Directive\EnvDirective":private]=>
+    object(LDL\Env\Util\Compiler\Options\EnvCompilerOptions)#8 (7) {
+      ["allowVariableOverwrite":"LDL\Env\Util\Compiler\Options\EnvCompilerOptions":private]=>
+      bool(false)
+      ["addPrefix":"LDL\Env\Util\Compiler\Options\EnvCompilerOptions":private]=>
+      bool(true)
+      ["varNameToUpperCase":"LDL\Env\Util\Compiler\Options\EnvCompilerOptions":private]=>
+      bool(true)
+      ["commentsEnabled":"LDL\Env\Util\Compiler\Options\EnvCompilerOptions":private]=>
+      bool(true)
+      ["onBeforeCompile":"LDL\Env\Util\Compiler\Options\EnvCompilerOptions":private]=>
+      NULL
+      ["onCompile":"LDL\Env\Util\Compiler\Options\EnvCompilerOptions":private]=>
+      NULL
+      ["onAfterCompile":"LDL\Env\Util\Compiler\Options\EnvCompilerOptions":private]=>
+      NULL
+    }
+    ["parserOptions":"LDL\Env\Util\Line\Type\Directive\EnvDirective":private]=>
+    NULL
+    ["value":"LDL\Env\Util\Line\Type\AbstractEnvLine":private]=>
+    string(46) "!LDL-ENV COMPILER={"varNameToUpperCase": true}"
+  }
+  [2]=>
+  object(LDL\Env\Util\Line\Type\EmptyLine\EnvEmptyLine)#9 (1) {
+    ["value":"LDL\Env\Util\Line\Type\AbstractEnvLine":private]=>
+    string(0) ""
+  }
+  [3]=>
+  object(LDL\Env\Util\Line\Type\Variable\EnvLineVar)#12 (5) {
+    ["var":"LDL\Env\Util\Line\Type\Variable\EnvLineVar":private]=>
+    string(13) "App_Admin_URL"
+    ["value":"LDL\Env\Util\Line\Type\Variable\EnvLineVar":private]=>
+    string(31) "(string)http://localhost:8080
+"
+    ["castedValue":"LDL\Env\Util\Line\Type\Variable\EnvLineVar":private]=>
+    string(23) "http://localhost:8080
+"
+    ["prefix":"LDL\Env\Util\Line\Type\Variable\EnvLineVar":private]=>
+    string(0) ""
+    ["value":"LDL\Env\Util\Line\Type\AbstractEnvLine":private]=>
+    string(47) "App_Admin_URL=(string)http://localhost:8080\r\n"
+  }
+  [4]=>
+  object(LDL\Env\Util\Line\Type\Variable\EnvLineVar)#213 (5) {
+    ["var":"LDL\Env\Util\Line\Type\Variable\EnvLineVar":private]=>
+    string(16) "MAINTENANCE_MODE"
+    ["value":"LDL\Env\Util\Line\Type\Variable\EnvLineVar":private]=>
+    string(6) "(int)1"
+    ["castedValue":"LDL\Env\Util\Line\Type\Variable\EnvLineVar":private]=>
+    int(1)
+    ["prefix":"LDL\Env\Util\Line\Type\Variable\EnvLineVar":private]=>
+    string(0) ""
+    ["value":"LDL\Env\Util\Line\Type\AbstractEnvLine":private]=>
+    string(23) "MAINTENANCE_MODE=(int)1"
+  }
+}
+OK!

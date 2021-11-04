@@ -2,6 +2,7 @@
 
 namespace LDL\Env\Util\File\Parser\Options;
 
+use LDL\Env\Util\Parser\Options\EnvParserOptionsInterface;
 use LDL\Framework\Base\Contracts\ArrayFactoryInterface;
 
 class EnvFileParserOptions implements EnvFileParserOptionsInterface
@@ -39,7 +40,7 @@ class EnvFileParserOptions implements EnvFileParserOptionsInterface
         $this->ignore = $ignore;
     }
 
-    public function toArray() : array
+    public function toArray(bool $useKeys=null) : array
     {
         return get_object_vars($this);
     }
@@ -83,12 +84,7 @@ class EnvFileParserOptions implements EnvFileParserOptionsInterface
         return $this->ignore;
     }
 
-    /**
-     * @param EnvFileParserOptionsInterface $options
-     * @return EnvFileParserOptionsInterface
-     * @throws \LDL\Framework\Base\Exception\ToArrayException
-     */
-    public function merge(EnvFileParserOptionsInterface $options): ArrayFactoryInterface
+    public function merge(EnvParserOptionsInterface $options): EnvParserOptionsInterface
     {
         return self::fromArray(
             array_merge($options->toArray(), $this->toArray())
