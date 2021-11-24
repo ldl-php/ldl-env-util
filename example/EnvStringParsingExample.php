@@ -3,24 +3,7 @@
 require __DIR__.'/../vendor/autoload.php';
 
 use LDL\Env\Util\Compiler\EnvCompiler;
-use LDL\Env\Util\Compiler\Options\EnvCompilerOptions;
-use LDL\Env\Util\File\Writer\EnvFileWriter;
-use LDL\Env\Util\File\Writer\Options\EnvFileWriterOptions;
 use LDL\Env\Util\Parser\EnvParser;
-use LDL\Env\Util\Line\Parser\EnvLineParserCollection;
-use LDL\Env\Util\Line\Parser\Comment\EnvLineCommentParser;
-use LDL\Env\Util\Line\Parser\Directive\EnvLineCompilerDirectiveParser;
-use LDL\Env\Util\Line\Parser\EmptyLine\EnvEmptyLineParser;
-use LDL\Env\Util\Line\Parser\Variable\EnvLineVarParser;
-
-echo "Create Parser Collection\n";
-
-$parserCollection = new EnvLineParserCollection([
-    new EnvLineCommentParser(),
-    new EnvLineCompilerDirectiveParser(),
-    new EnvEmptyLineParser(),
-    new EnvLineVarParser()
-]);
 
 $parser = new EnvParser();
 

@@ -3,6 +3,10 @@
 namespace LDL\Env\Util\Line\Parser;
 
 use LDL\Env\Util\Line\EnvLineInterface;
+use LDL\Env\Util\Line\Parser\Comment\EnvLineCommentParser;
+use LDL\Env\Util\Line\Parser\Directive\EnvLineCompilerDirectiveParser;
+use LDL\Env\Util\Line\Parser\EmptyLine\EnvEmptyLineParser;
+use LDL\Env\Util\Line\Parser\Variable\EnvLineVarParser;
 use LDL\Type\Collection\AbstractTypedCollection;
 use LDL\Type\Collection\Traits\Validator\AppendKeyValidatorChainTrait;
 use LDL\Type\Collection\Traits\Validator\AppendValueValidatorChainTrait;
@@ -17,6 +21,18 @@ class EnvLineParserCollection extends AbstractTypedCollection implements EnvLine
 
     public function __construct(iterable $items = null)
     {
+        /**
+         * If no items are passed, use default line parsers
+         */
+        if(null  === $items){
+            $items = [
+                new EnvLineCommentParser(),
+                new EnvLineCompilerDirectiveParser(),
+                new EnvEmptyLineParser(),
+                new EnvLineVarParser()
+            ];
+        }
+
         $this->getAppendValueValidatorChain()
             ->getChainItems()
             ->append(new InterfaceComplianceValidator(EnvLineParserInterface::class))

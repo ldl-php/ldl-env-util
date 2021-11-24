@@ -8,6 +8,8 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ### Added
 
+- feature/1201177059252669 - Refactor env parsing / Add documentation
+
 ### Changed
 
 - fixes/1200732308074785 - Fix collections by adding getChainItems

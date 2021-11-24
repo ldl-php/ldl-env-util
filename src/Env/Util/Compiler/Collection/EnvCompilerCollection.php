@@ -12,7 +12,6 @@ use LDL\Env\Util\Compiler\Type\EnvVarCaseTransform;
 use LDL\Env\Util\Line\Collection\EnvLineCollectionInterface;
 use LDL\Env\Util\Line\EnvLineInterface;
 use LDL\Env\Util\Line\Type\Directive\EnvCompilerDirectiveInterface;
-use LDL\Env\Util\Line\Type\EmptyLine\EnvEmptyLineInterface;
 use LDL\Type\Collection\AbstractTypedCollection;
 use LDL\Validators\InterfaceComplianceValidator;
 

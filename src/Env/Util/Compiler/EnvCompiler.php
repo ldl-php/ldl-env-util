@@ -10,7 +10,7 @@ use LDL\Env\Util\Line\Type\EnvUnknownLine;
 use LDL\Framework\Helper\IterableHelper;
 use LDL\Type\Collection\Types\String\StringCollection;
 
-class EnvCompiler
+final class EnvCompiler
 {
     /**
      * @var array
