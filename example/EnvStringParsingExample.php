@@ -42,4 +42,4 @@ foreach($lines as $line){
 
 $compiler = new EnvCompiler();
 
-var_dump($compiler->compile($lines)->filterEmptyLines()->implode("\n"));
+var_dump($compiler->compile($lines)->getStringCollection()->filterEmptyLines()->implode("\n"));

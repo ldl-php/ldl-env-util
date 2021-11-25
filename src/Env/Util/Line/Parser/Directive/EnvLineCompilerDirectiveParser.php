@@ -3,33 +3,33 @@
 namespace LDL\Env\Util\Line\Parser\Directive;
 
 use LDL\Env\Util\Line\EnvLineInterface;
-use LDL\Env\Util\Line\Type\Directive\EnvCompilerDirective;
-use LDL\Env\Util\Line\Type\Directive\EnvCompilerDirectiveInterface;
+use LDL\Env\Util\Line\Type\Directive\EnvLineDirective;
+use LDL\Env\Util\Line\Type\Directive\EnvLineDirectiveInterface;
 
 class EnvLineCompilerDirectiveParser implements EnvLineCompilerDirectiveParserInterface
 {
     public function createFromString(string $line) : ?EnvLineInterface
     {
-        $dLength = strlen(EnvCompilerDirectiveInterface::ENV_COMPILER_STRING);
+        $dLength = strlen(EnvLineDirectiveInterface::ENV_COMPILER_STRING);
         $directive = trim((string)substr($line,0, $dLength));
 
-        if(EnvCompilerDirectiveInterface::ENV_COMPILER_STRING !== $directive){
+        if(EnvLineDirectiveInterface::ENV_COMPILER_STRING !== $directive){
             return null;
         }
 
         $options = substr($line, $dLength+1);
 
-        $isStart = strpos($options, EnvCompilerDirectiveInterface::ENV_COMPILER_START) === 0;
+        $isStart = strpos($options, EnvLineDirectiveInterface::ENV_COMPILER_START) === 0;
 
         if(!$isStart){
-            return new EnvCompilerDirective($line, false);
+            return new EnvLineDirective($line, false);
         }
 
         try {
             $options = substr($options, strpos($options, '=') + 1);
             $options = json_decode($options, true, 512, \JSON_THROW_ON_ERROR);
 
-            return new EnvCompilerDirective(
+            return new EnvLineDirective(
                 $line,
                 $isStart,
                 $options

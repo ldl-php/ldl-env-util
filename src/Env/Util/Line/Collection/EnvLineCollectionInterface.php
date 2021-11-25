@@ -2,12 +2,20 @@
 
 namespace LDL\Env\Util\Line\Collection;
 
+use LDL\Env\Util\Line\EnvLineInterface;
 use LDL\Env\Util\Line\Type\Variable\EnvLineVarInterface;
 use LDL\Framework\Base\Contracts\Type\ToStringInterface;
 use LDL\Type\Collection\TypedCollectionInterface;
+use LDL\Type\Collection\Types\String\StringCollection;
 
 interface EnvLineCollectionInterface extends TypedCollectionInterface, ToStringInterface
 {
+    /**
+     * @param string $name
+     * @return EnvLineInterface|null
+     */
+    public function getVar(string $name) : ?EnvLineInterface;
+
     /**
      * @param string $variable
      * @return bool
@@ -34,4 +42,8 @@ interface EnvLineCollectionInterface extends TypedCollectionInterface, ToStringI
      */
     public function merge(EnvLineCollectionInterface $lines) : EnvLineCollectionInterface;
 
+    /**
+     * @return StringCollection
+     */
+    public function getStringCollection() : StringCollection;
 }

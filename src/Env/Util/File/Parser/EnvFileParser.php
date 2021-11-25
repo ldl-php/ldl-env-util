@@ -11,8 +11,8 @@ use LDL\Env\Util\Line\Collection\EnvLineCollection;
 use LDL\Env\Util\Line\Collection\EnvLineCollectionInterface;
 use LDL\Env\Util\Line\Parser\Variable\EnvLineVarParser;
 use LDL\Env\Util\Line\Type\Comment\EnvLineComment;
-use LDL\Env\Util\Line\Type\Directive\EnvCompilerDirective;
-use LDL\Env\Util\Line\Type\Directive\EnvCompilerDirectiveInterface;
+use LDL\Env\Util\Line\Type\Directive\EnvLineDirective;
+use LDL\Env\Util\Line\Type\Directive\EnvLineDirectiveInterface;
 use LDL\Env\Util\Line\Type\Variable\EnvLineVarInterface;
 use LDL\Env\Util\Parser\EnvParserInterface;
 use LDL\Env\Util\File\Exception\ReadEnvFileException;
@@ -79,7 +79,7 @@ class EnvFileParser implements EnvFileParserInterface
 
                 $currentFileLines->appendInPosition(
                     $fileComment,
-                    $currentFileLines->getFirst() instanceof EnvCompilerDirectiveInterface ? 2 : 1
+                    $currentFileLines->getFirst() instanceof EnvLineDirectiveInterface ? 2 : 1
                 );
 
                 $return->appendMany($currentFileLines);

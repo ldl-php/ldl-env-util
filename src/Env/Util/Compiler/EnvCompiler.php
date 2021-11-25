@@ -2,15 +2,13 @@
 
 namespace LDL\Env\Util\Compiler;
 
-use LDL\Env\Util\Compiler\Collection\EnvCompilerCollection;
+use LDL\Env\Util\Compiler\Collection\EnvCompilerDirectiveCollection;
 use LDL\Env\Util\Line\Collection\EnvLineCollection;
 use LDL\Env\Util\Line\Collection\EnvLineCollectionInterface;
-use LDL\Env\Util\Line\Type\Directive\EnvCompilerDirectiveInterface;
+use LDL\Env\Util\Line\Type\Directive\EnvLineDirectiveInterface;
 use LDL\Env\Util\Line\Type\EnvUnknownLine;
-use LDL\Framework\Helper\IterableHelper;
-use LDL\Type\Collection\Types\String\StringCollection;
 
-final class EnvCompiler
+final class EnvCompiler implements EnvCompilerInterface
 {
     /**
      * @var array
@@ -18,29 +16,29 @@ final class EnvCompiler
     private $compilers;
 
     /**
-     * @var EnvCompilerDirectiveInterface|null
+     * @var EnvLineDirectiveInterface|null
      */
     private $startDirective;
 
     public function __construct(
-        EnvCompilerCollection $compilers=null,
-        EnvCompilerDirectiveInterface $startDirective=null
+        EnvCompilerDirectiveCollection $compilers=null,
+        EnvLineDirectiveInterface $startDirective=null
     )
     {
-        $this->compilers = $compilers ?? new EnvCompilerCollection();
+        $this->compilers = $compilers ?? new EnvCompilerDirectiveCollection();
         $this->startDirective = $startDirective;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function compile(EnvLineCollectionInterface $lines) : StringCollection
+    public function compile(EnvLineCollectionInterface $lines) : EnvLineCollectionInterface
     {
         $curLines = new EnvLineCollection();
         $curDirective = $this->startDirective;
 
         foreach($lines as $line){
-            $isDirective = $line instanceof EnvCompilerDirectiveInterface;
+            $isDirective = $line instanceof EnvLineDirectiveInterface;
 
             /**
              * START directive
@@ -67,9 +65,6 @@ final class EnvCompiler
             $curLines->append($line);
         }
 
-        return new StringCollection(IterableHelper::map($curLines, static function($v){
-            return (string)$v;
-        }));
-
+        return $curLines;
     }
 }

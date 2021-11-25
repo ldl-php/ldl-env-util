@@ -4,7 +4,7 @@ namespace LDL\Env\Util\Line\Type\Directive;
 
 use LDL\Env\Util\Line\EnvLineInterface;
 
-interface EnvCompilerDirectiveInterface extends EnvLineInterface
+interface EnvLineDirectiveInterface extends EnvLineInterface
 {
     public const ENV_COMPILER_STRING = '!LDL-COMPILER';
     public const ENV_COMPILER_START='START';
