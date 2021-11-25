@@ -5,9 +5,11 @@ namespace LDL\Env\Util\Line\Collection;
 use LDL\Env\Util\Line\EnvLineInterface;
 use LDL\Env\Util\Line\Type\Variable\EnvLineVarInterface;
 use LDL\Framework\Base\Collection\Contracts\CollectionInterface;
+use LDL\Framework\Helper\IterableHelper;
 use LDL\Type\Collection\AbstractTypedCollection;
 use LDL\Type\Collection\Traits\Validator\AppendKeyValidatorChainTrait;
 use LDL\Type\Collection\Traits\Validator\AppendValueValidatorChainTrait;
+use LDL\Type\Collection\Types\String\StringCollection;
 use LDL\Type\Collection\Validator\UniqueValidator;
 use LDL\Validators\IntegerValidator;
 use LDL\Validators\InterfaceComplianceValidator;
@@ -60,6 +62,25 @@ class EnvLineCollection extends AbstractTypedCollection implements EnvLineCollec
         return parent::remove($key);
     }
 
+    public function getVar(string $name) : ?EnvLineInterface
+    {
+        if(!array_key_exists($name, $this->vars)){
+            return null;
+        }
+
+        foreach($this as $line){
+            if (!$line instanceof EnvLineVarInterface) {
+                continue;
+            }
+
+            if($line->getVar() === $name){
+                return $line;
+            }
+        }
+
+        return null;
+    }
+
     public function hasVar(string $variable): bool
     {
         return array_key_exists($variable, $this->vars);
@@ -99,6 +120,13 @@ class EnvLineCollection extends AbstractTypedCollection implements EnvLineCollec
         }
 
         return $this;
+    }
+
+    public function getStringCollection() : StringCollection
+    {
+        return new StringCollection(IterableHelper::map($this, static function($v){
+           return (string) $v;
+        }));
     }
 
     public function toString(): string

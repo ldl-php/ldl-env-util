@@ -16,20 +16,20 @@ They contain vital settings for your application to work in each environment.
 
 Examples of some useful use cases of .env:
 
-- I am on my LOCAL dev environment creating a new feature which notifies users through email, sending emails must be disabled.
-- If I am on my LOCAL dev environment, I would like some additional debugging information to be added inside each request. 
-- If I am on my LOCAL dev environment, the database password is 123456
-- If I am on my PRODUCTION dev environment, the database password is <THE REAL complex password here>
-- If I am on PRODUCTION environment, no debugging info must be added on each request.
+- At my LOCAL dev environment creating a new feature which notifies users through email, sending emails must be disabled.
+- At my LOCAL dev environment, I would like some additional debugging information to be added inside each request. 
+- At my LOCAL dev environment, the database password is 123456
+- At PRODUCTION environment, the database password is <THE REAL complex password here>
+- At PRODUCTION environment, no debugging info must be added on each request.
 
 ## LDL .env concept
 
 An env file/string can contain the fore mentioned comments, variables, empty lines *plus* certain compiler directives 
-which allow us to do special actions / transforms on variables or lines or custom lines.
+which allow us to do special actions / transforms on variables / skip certain lines / detect duplicate variables.
 
 ## Parser and compilers
 
-This package contains a set of parsers and compilers, in this section we explain what each one of these do: 
+This package contains a set of parsers and compilers, in this section we explain what each one of these do:
 
 ### Parsers
 
@@ -97,11 +97,47 @@ Parse lines:
 ^ "LDL\Env\Util\Line\Type\Variable\EnvLineVar = App_Admin_URL=http://localhost:8080"
 ^ "LDL\Env\Util\Line\Type\Variable\EnvLineVar = MAINTENANCE_MODE=0"
 ^ "LDL\Env\Util\Line\Type\EnvUnknownLine = UNKNOWN LINE"
-^ "LDL\Env\Util\Line\Type\Directive\EnvCompilerDirective = !LDL-COMPILER START={"ignore": true}"
+^ "LDL\Env\Util\Line\Type\Directive\EnvLineDirective = !LDL-COMPILER START={"ignore": true}"
 ^ "LDL\Env\Util\Line\Type\Variable\EnvLineVar = MUST_NOT_BE_SHOWN=1"
 ^ "LDL\Env\Util\Line\Type\Variable\EnvLineVar = MUST_NOT_BE_SHOWN=2"
 ^ "LDL\Env\Util\Line\Type\Directive\EnvCompilerDirective = !LDL-COMPILER STOP"
 ```
+
+All different core parsers can be found at the folder:
+
+```text
+src/Env/Util/Line/Parser/*
+```
+
+*For a complete example see:*
+
+[a relative link](example/EnvStringParsingExample.php)
+
+### EnvFileParser
+
+In most situations you will most likely be parsing files, for this, there's an EnvFileParser class with a parse
+method which takes in a set of iterable items, you can pass an array or an object which implements \Traversable,
+internally this collection will be transformed into a ReadableFileCollection, if a file is not readable an exception 
+will be thrown.
+
+Example:
+
+```php
+$parser = new EnvFileParser();
+
+$parser->parse([
+    '/path/to/file1/.env',
+    '/path/to/file2/.env'
+]);
+
+foreach($lines as $line){
+    dump(sprintf('%s = %s', get_class($line), $line));
+}
+```
+
+*For a complete example see:*
+
+[a relative link](example/EnvFileParsingExample.php)
 
 ### Compiler
 
@@ -122,72 +158,63 @@ foreach($compiled as $line){
 
 ```
 
-The EnvCompiler uses an EnvCompilerCollection, each item on this collection must be an instance of EnvCompilerInterface.
-The collection can be passed as a constructor argument (enabling you to add a custom set of compiler directives) or 
-a default containing the core compilers will be created.
+Output:
 
-### Default core compilers:
+```text
+#COMMENT LINE"
+App_Admin_URL=http://localhost:8080"
+MAINTENANCE_MODE=0"
+```
 
-- EnvSkipEmptyLine
+The EnvCompiler class uses an EnvCompilerDirectiveCollection, each item on this collection must be an instance of 
+EnvCompilerDirectiveInterface. The collection can be passed to EnvCompiler as a constructor argument 
+(enabling you to add a custom set of compiler directives) or a default containing the core compilers will be created.
+
+### Default core compiler directives:
+
+- EnvSkipEmptyLineCompilerDirective
+
 Skips empty lines 
 
-- EnvVarCaseTransform
+- EnvVarCaseTransformCompilerDirective
+
 Transforms casing on variables (upper or lower),
 
-- EnvIgnoreLIne
+- EnvIgnoreLineCompilerDirective
+
 When this directive is used, lines below it will be ignored,
 
-- EnvIgnoreComments
+- EnvIgnoreCommentsCompilerDirective
+
 Ignores all comments
 
-- EnvDuplicateVarResolver
+- EnvDuplicateVarResolverCompilerDirective
 
 If a variable with a duplicate name is found, an exception can be thrown, or a resolution of which variable to use 
 can be specified.
 
-- EnvUnknownLineResolver
+- EnvUnknownLineCompilerDirective
 
 By default, if an unknown line is found, an exception will be thrown, the line can also be discarded. 
 
+Default core compiler directives can be found in:
+
+```text
+src/Env/Util/Compiler/Directive
+```
+
 ### EnvCompiler compile method
 
-Compile method works in the following way:
+The compile method works in the following way:
 
 - When a start EnvLineDirective is found, that directive is applied to the rest of the lines
-- When another start directive is found, that directive will take point
-- When a stop EnvLineDirective 
+- If another start directive is found, that directive will take point and the previous directive will be lost
+- When a stop EnvLineDirective is found, no directives will be applied.
 
-The compiler collection takes in a set of lines parsed by the parser and transforms them into a simple StringCollection
-which can be saved by the user. When the compiler detects that a certain line is an instance of EnvLineDirectiveInterface
+NOTE: If you have set a master directive in EnvCompiler through the constructor, when finding a stop directive, the
+master directive will be used.
 
-## LDL ENV concepts
+### TODO
 
-- LDL\Env\Util\Line\Parser\EnvLineParserInterface
-
-Interface which contains a createFromString method, the first argument to this method is usually any kind of string
-that can be found inside of an env file.
-
-All different core parsers can be found at the folder:
-
-```
-src/Env/Util/Line/Parser/*
-```
-
-- LDL\Env\Util\Line\Parser\EnvLineParserCollection
-
-Contains a collection of EnvLineParserInterface which are able to detect which kind of line are we dealing with
-the parser collection contains a parse method which will iterate through all parsers and call parse on each one of them.
-The first parser that is able to parse a certain line will be used.
-
-- LDL\Env\Util\Line\Collection\EnvLineCollectionInterface
-
-Contains a collection of EnvLineInterface instances, different line types can be found in the following directory:
-
-```
-src/Env/Util/Line/Type/*
-```
-
-
-
-
-
+- Write instructions on how to create your very own parser
+- Write instructions on how to create your very own compiler directive

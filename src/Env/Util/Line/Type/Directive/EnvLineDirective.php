@@ -5,7 +5,7 @@ namespace LDL\Env\Util\Line\Type\Directive;
 use LDL\Env\Util\Compiler\Options\EnvCompilerOptionsInterface;
 use LDL\Env\Util\Line\Type\AbstractEnvLine;
 
-class EnvCompilerDirective extends AbstractEnvLine implements EnvCompilerDirectiveInterface
+class EnvLineDirective extends AbstractEnvLine implements EnvLineDirectiveInterface
 {
     /**
      * @var EnvCompilerOptionsInterface|null
