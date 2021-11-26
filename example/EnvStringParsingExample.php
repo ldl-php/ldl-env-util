@@ -4,8 +4,13 @@ require __DIR__.'/../vendor/autoload.php';
 
 use LDL\Env\Util\Compiler\EnvCompiler;
 use LDL\Env\Util\Parser\EnvParser;
+use LDL\Framework\Base\Collection\CallableCollection;
 
-$parser = new EnvParser();
+$parser = new EnvParser(null,
+    (new CallableCollection())->append(static function(string $line){
+        echo "Parse line $line\n";
+    })
+);
 
 $lines = [
     '!LDL-COMPILER START={"onDuplicateVar":"last"}',
@@ -30,10 +35,6 @@ $lines = [
     '!LDL-COMPILER STOP'
 ];
 
-echo "Lines to be parsed:\n";
-echo var_export($lines,true)."\n\n";
-
-echo "Parse lines:\n";
 $lines = $parser->parse($lines);
 
 foreach($lines as $line){

@@ -11,37 +11,56 @@ use LDL\Env\Util\Line\Collection\EnvLineCollection;
 use LDL\Env\Util\Line\Collection\EnvLineCollectionInterface;
 use LDL\Env\Util\Line\Parser\Variable\EnvLineVarParser;
 use LDL\Env\Util\Line\Type\Comment\EnvLineComment;
-use LDL\Env\Util\Line\Type\Directive\EnvLineDirective;
 use LDL\Env\Util\Line\Type\Directive\EnvLineDirectiveInterface;
 use LDL\Env\Util\Line\Type\Variable\EnvLineVarInterface;
 use LDL\Env\Util\Parser\EnvParserInterface;
 use LDL\Env\Util\File\Exception\ReadEnvFileException;
 use LDL\Env\Util\Parser\EnvParser;
 use LDL\File\Collection\ReadableFileCollection;
-use LDL\Env\Util\Line\Type\EmptyLine\EnvEmptyLine;
 use LDL\File\Contracts\FileInterface;
-use LDL\Framework\Base\Collection\Contracts\AppendInPositionInterface;
+use LDL\Framework\Base\Collection\CallableCollectionInterface;
 use LDL\Framework\Helper\IterableHelper;
 
 class EnvFileParser implements EnvFileParserInterface
 {
     /**
-     * @var Options\EnvFileParserOptionsInterface
-     */
-    private $options;
-
-    /**
      * @var EnvParserInterface
      */
     private $parser;
 
+    /**
+     * @var bool
+     */
+    private $skipUnreadable;
+
+    /**
+     * @var int
+     */
+    private $directoryPrefixDepth;
+
+    /**
+     * @var CallableCollectionInterface
+     */
+    private $beforeParse;
+
+    /**
+     * @var CallableCollectionInterface
+     */
+    private $afterParse;
+
     public function __construct(
-        EnvParserInterface $parser=null,
-        Options\EnvFileParserOptionsInterface $options=null
+        ?EnvParserInterface $parser,
+        ?bool $skipUnreadable,
+        ?int $directoryPrefixDepth = 2,
+        CallableCollectionInterface $onBeforeParse=null,
+        CallableCollectionInterface $onAfterParse=null
     )
     {
         $this->parser = $parser ?? new EnvParser();
-        $this->options = $options ?? new Options\EnvFileParserOptions();
+        $this->skipUnreadable = $skipUnreadable ?? false;
+        $this->directoryPrefixDepth = $directoryPrefixDepth ?? 2;
+        $this->beforeParse = $onBeforeParse;
+        $this->afterParse = $onAfterParse;
     }
 
     /**
@@ -55,13 +74,15 @@ class EnvFileParser implements EnvFileParserInterface
 
         $return = new EnvLineCollection();
 
-        $options = $this->options;
-
         /**
          * Parse each env file
          * @var FileInterface $file
          */
         foreach($files as $file) {
+
+            if(null !== $this->beforeParse){
+                $this->beforeParse->call($file, $files, $return, $this);
+            }
 
             try{
                 $currentFileLines = new EnvLineCollection();
@@ -84,8 +105,12 @@ class EnvFileParser implements EnvFileParserInterface
 
                 $return->appendMany($currentFileLines);
 
+                if(null !== $this->afterParse) {
+                    $this->afterParse->call($file, $currentFileLines, $files, $return, $this);
+                }
+
             }catch(\Exception $e){
-                if($options->isSkipUnreadable()){
+                if($this->skipUnreadable){
                     continue;
                 }
 
@@ -99,23 +124,17 @@ class EnvFileParser implements EnvFileParserInterface
         return $return;
     }
 
-    public function getOptions() : Options\EnvFileParserOptionsInterface
-    {
-        return $this->options;
-    }
-
     //<editor-fold desc="Private methods">
     private function prefixVarsWithDirectory(
         EnvLineCollectionInterface $lines,
         FileInterface $file
     ) : EnvLineCollectionInterface
     {
-        $depth = $this->options->getDirPrefixDepth();
+        $depth = $this->directoryPrefixDepth;
 
         if(0 === $depth){
             return $lines;
         }
-
 
         $prefix = explode(\DIRECTORY_SEPARATOR, (string)$file->getDirectory());
         $prefix[] = '';

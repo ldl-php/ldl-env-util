@@ -2,6 +2,8 @@
 
 namespace LDL\Env\Util\File\Parser\Options;
 
+use LDL\Framework\Base\Collection\CallableCollectionInterface;
+
 interface EnvFileParserOptionsInterface
 {
     /**
@@ -14,4 +16,8 @@ interface EnvFileParserOptionsInterface
      */
     public function getDirPrefixDepth(): int;
 
+    /**
+     * @return CallableCollectionInterface|null
+     */
+    public function getOnBeforeParse() : ?CallableCollectionInterface;
 }

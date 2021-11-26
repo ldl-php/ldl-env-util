@@ -5,6 +5,7 @@ require __DIR__.'/../vendor/autoload.php';
 use LDL\Env\Util\File\Parser\EnvFileParser;
 use LDL\Env\Util\Compiler\EnvCompiler;
 use LDL\File\Collection\ReadableFileCollection;
+use LDL\Framework\Base\Collection\CallableCollection;
 
 $files = new ReadableFileCollection([
     sprintf('%s/Application/Admin/.env', __DIR__),
@@ -12,7 +13,13 @@ $files = new ReadableFileCollection([
     sprintf('%s/Application/.env', __DIR__),
 ]);
 
-$parser = new EnvFileParser();
+$parser = new EnvFileParser(null,
+    false,
+    null,
+    (new CallableCollection())->append(static function($file){
+        echo "$file ...\n";
+    })
+);
 $compiler = new EnvCompiler();
 
 $file = sprintf('%s/%s', __DIR__, '.env-compiled');
@@ -21,6 +28,8 @@ try{
     echo "Parse env files:\n";
 
     $lines = $parser->parse($files);
+
+    echo "\n";
 
     foreach($compiler->compile($lines) as $line){
         echo "$line\n";

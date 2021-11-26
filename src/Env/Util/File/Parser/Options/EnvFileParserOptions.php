@@ -2,7 +2,8 @@
 
 namespace LDL\Env\Util\File\Parser\Options;
 
-use LDL\Env\Util\Parser\Options\EnvParserOptionsInterface;
+use LDL\Framework\Base\Collection\CallableCollection;
+use LDL\Framework\Base\Collection\CallableCollectionInterface;
 use LDL\Framework\Base\Contracts\ArrayFactoryInterface;
 
 class EnvFileParserOptions implements EnvFileParserOptionsInterface
@@ -23,26 +24,26 @@ class EnvFileParserOptions implements EnvFileParserOptionsInterface
     private $dirPrefixDepth;
 
     /**
-     * @var bool
+     * @var CallableCollection
      */
-    private $ignore;
+    private $beforeParse;
 
     public function __construct(
         bool $skipUnreadable=false,
-        bool $ignoreSyntaxErrors=false,
         int $dirPrefixDepth=2,
-        bool $ignore=false
+        CallableCollection $onBeforeParse=null
     )
     {
         $this->skipUnreadable = $skipUnreadable;
-        $this->ignoreSyntaxErrors = $ignoreSyntaxErrors;
         $this->dirPrefixDepth = $dirPrefixDepth;
-        $this->ignore = $ignore;
+        $this->beforeParse = $onBeforeParse;
     }
 
     public function toArray(bool $useKeys=null) : array
     {
-        return get_object_vars($this);
+        $vars = get_object_vars($this);
+        unset($vars['beforeParse']);
+        return $vars;
     }
 
     public function jsonSerialize() : array
@@ -58,9 +59,8 @@ class EnvFileParserOptions implements EnvFileParserOptionsInterface
     {
         return new self(
             array_key_exists('skipUnreadable', $options) ? (bool)$options['skipUnreadable'] : false,
-            array_key_exists('ignoreSyntaxErrors', $options) ? (bool)$options['ignoreSyntaxErrors'] : false,
             array_key_exists('dirPrefixDepth', $options) ? (int)$options['dirPrefixDepth'] : 2,
-            array_key_exists('ignore', $options) ? (bool)$options['ignore'] : false
+            array_key_exists('onBeforeParse', $options) ? new CallableCollection($options['onBeforeParse']) : null
         );
     }
 
@@ -77,6 +77,11 @@ class EnvFileParserOptions implements EnvFileParserOptionsInterface
     public function getDirPrefixDepth() : int
     {
         return $this->dirPrefixDepth;
+    }
+
+    public function getOnBeforeParse() : ?CallableCollectionInterface
+    {
+        return $this->beforeParse;
     }
 
     public function isIgnore(): bool

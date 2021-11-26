@@ -1,0 +1,45 @@
+Parse line !LDL-COMPILER START={"onDuplicateVar":"last"}
+Parse line DUPLICATE_VAR=FIRST
+Parse line DUPLICATE_VAR=MID
+Parse line DUPLICATE_VAR=LAST
+Parse line !LDL-COMPILER STOP
+Parse line !LDL-COMPILER START={"VAR_NAME_CASE": "UPPER"}
+Parse line App_Admin_URL=(string)http://localhost:8080
+Parse line MAINTENANCE_MODE=(int)0
+Parse line
+Parse line lowercase_must_be_uppercase=1
+Parse line !LDL-COMPILER STOP
+Parse line !LDL-COMPILER START={"varNameToUpperCase": false,"comments":false}
+Parse line lowercase_must_remain_lowercase=1
+Parse line #COMMENT LINE
+Parse line !LDL-COMPILER STOP
+Parse line UNKNOWN LINE
+Parse line !LDL-COMPILER START={"ignore": true}
+Parse line MUST_NOT_BE_SHOWN=1
+Parse line MUST_NOT_BE_SHOWN=2
+Parse line !LDL-COMPILER STOP
+"LDL\Env\Util\Line\Type\Directive\EnvLineDirective = !LDL-COMPILER START={"onDuplicateVar":"last"}"
+"LDL\Env\Util\Line\Type\Variable\EnvLineVar = DUPLICATE_VAR=FIRST"
+"LDL\Env\Util\Line\Type\Variable\EnvLineVar = DUPLICATE_VAR=MID"
+"LDL\Env\Util\Line\Type\Variable\EnvLineVar = DUPLICATE_VAR=LAST"
+"LDL\Env\Util\Line\Type\Directive\EnvLineDirective = !LDL-COMPILER STOP"
+"LDL\Env\Util\Line\Type\Directive\EnvLineDirective = !LDL-COMPILER START={"VAR_NAME_CASE": "UPPER"}"
+"LDL\Env\Util\Line\Type\Variable\EnvLineVar = App_Admin_URL=http://localhost:8080"
+"LDL\Env\Util\Line\Type\Variable\EnvLineVar = MAINTENANCE_MODE=0"
+"LDL\Env\Util\Line\Type\EmptyLine\EnvEmptyLine = "
+"LDL\Env\Util\Line\Type\Variable\EnvLineVar = lowercase_must_be_uppercase=1"
+"LDL\Env\Util\Line\Type\Directive\EnvLineDirective = !LDL-COMPILER STOP"
+"LDL\Env\Util\Line\Type\Directive\EnvLineDirective = !LDL-COMPILER START={"varNameToUpperCase": false,"comments":false}"
+"LDL\Env\Util\Line\Type\Variable\EnvLineVar = lowercase_must_remain_lowercase=1"
+"LDL\Env\Util\Line\Type\Comment\EnvLineComment = #COMMENT LINE"
+"LDL\Env\Util\Line\Type\Directive\EnvLineDirective = !LDL-COMPILER STOP"
+"LDL\Env\Util\Line\Type\EnvUnknownLine = UNKNOWN LINE"
+"LDL\Env\Util\Line\Type\Directive\EnvLineDirective = !LDL-COMPILER START={"ignore": true}"
+"LDL\Env\Util\Line\Type\Variable\EnvLineVar = MUST_NOT_BE_SHOWN=1"
+"LDL\Env\Util\Line\Type\Variable\EnvLineVar = MUST_NOT_BE_SHOWN=2"
+"LDL\Env\Util\Line\Type\Directive\EnvLineDirective = !LDL-COMPILER STOP"
+string(137) "DUPLICATE_VAR=LAST
+APP_ADMIN_URL=http://localhost:8080
+MAINTENANCE_MODE=0
+LOWERCASE_MUST_BE_UPPERCASE=1
+lowercase_must_remain_lowercase=1"
