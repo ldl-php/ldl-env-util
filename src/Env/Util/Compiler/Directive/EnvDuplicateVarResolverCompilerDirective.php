@@ -16,6 +16,16 @@ class EnvDuplicateVarResolverCompilerDirective implements EnvCompilerDirectiveIn
     public const USE_LAST='last';
     public const USE_FIRST='first';
 
+    /**
+     * @var string
+     */
+    private $action;
+
+    public function __construct(string $action=self::THROW)
+    {
+        $this->action = $action;
+    }
+
     public function getOptions() : array
     {
         return [];
@@ -63,6 +73,29 @@ class EnvDuplicateVarResolverCompilerDirective implements EnvCompilerDirectiveIn
             break;
         }
 
+    }
+
+    public function matches(EnvLineDirectiveInterface $directive): bool
+    {
+        $options = array_change_key_case($directive->getCompilerOptions(), \CASE_UPPER);
+        return array_key_exists(self::DIRECTIVE, $options);
+    }
+
+    public static function fromOptions(array $options): ?EnvCompilerDirectiveInterface
+    {
+        $options = array_change_key_case($options, \CASE_UPPER);
+        if(!array_key_exists(self::DIRECTIVE, $options)){
+            return null;
+        }
+
+        return new self($options[self::DIRECTIVE]);
+    }
+
+    public function toArray(bool $useKeys = null): array
+    {
+        return [
+          self::DIRECTIVE => $this->action
+        ];
     }
 
 }

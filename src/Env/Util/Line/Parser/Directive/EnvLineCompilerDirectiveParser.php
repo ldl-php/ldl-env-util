@@ -8,6 +8,11 @@ use LDL\Env\Util\Line\Type\Directive\EnvLineDirectiveInterface;
 
 class EnvLineCompilerDirectiveParser implements EnvLineCompilerDirectiveParserInterface
 {
+
+    /**
+     * @param string $line
+     * @return EnvLineDirectiveInterface|null
+     */
     public function createFromString(string $line) : ?EnvLineInterface
     {
         $dLength = strlen(EnvLineDirectiveInterface::ENV_COMPILER_STRING);
@@ -38,10 +43,5 @@ class EnvLineCompilerDirectiveParser implements EnvLineCompilerDirectiveParserIn
             return null;
         }
 
-    }
-
-    public function transform(EnvLineInterface $line): string
-    {
-        return '';
     }
 }

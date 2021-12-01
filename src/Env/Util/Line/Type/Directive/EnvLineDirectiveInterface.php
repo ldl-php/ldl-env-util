@@ -13,4 +13,5 @@ interface EnvLineDirectiveInterface extends EnvLineInterface
     public function getCompilerOptions() : array;
 
     public function isStart() : bool;
+
 }

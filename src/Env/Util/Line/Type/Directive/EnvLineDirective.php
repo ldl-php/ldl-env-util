@@ -2,13 +2,15 @@
 
 namespace LDL\Env\Util\Line\Type\Directive;
 
-use LDL\Env\Util\Compiler\Options\EnvCompilerOptionsInterface;
+use LDL\Env\Util\Compiler\Collection\EnvCompilerDirectiveCollection;
+use LDL\Env\Util\Compiler\Collection\EnvCompilerDirectiveCollectionInterface;
+use LDL\Env\Util\Compiler\EnvCompilerDirectiveInterface;
 use LDL\Env\Util\Line\Type\AbstractEnvLine;
 
 class EnvLineDirective extends AbstractEnvLine implements EnvLineDirectiveInterface
 {
     /**
-     * @var EnvCompilerOptionsInterface|null
+     * @var array|null
      */
     private $compilerOptions;
 

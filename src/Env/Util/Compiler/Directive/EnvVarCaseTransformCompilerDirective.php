@@ -15,6 +15,15 @@ class EnvVarCaseTransformCompilerDirective implements EnvCompilerDirectiveInterf
     public const CASE_UPPER='UPPER';
     public const CASE_LOWER='LOWER';
 
+    /**
+     * @var string
+     */
+    private $casing;
+
+    public function __construct(string $casing=null){
+        $this->casing = $casing;
+    }
+
     public function getOptions() : array
     {
         return [];
@@ -55,6 +64,28 @@ class EnvVarCaseTransformCompilerDirective implements EnvCompilerDirectiveInterf
                 return $line;
         }
 
+    }
+    public static function fromOptions(array $options): ?EnvCompilerDirectiveInterface
+    {
+        $options = array_change_key_case($options, \CASE_UPPER);
+        if(!array_key_exists(self::DIRECTIVE, $options)){
+            return null;
+        }
+
+        return new self($options[self::DIRECTIVE]);
+    }
+
+    public function matches(EnvLineDirectiveInterface $directive): bool
+    {
+        $options = array_change_key_case($directive->getCompilerOptions(), \CASE_UPPER);
+        return array_key_exists(self::DIRECTIVE, $options);
+    }
+
+    public function toArray(bool $useKeys = null): array
+    {
+        return [
+          self::DIRECTIVE => $this->casing
+        ];
     }
 
 }

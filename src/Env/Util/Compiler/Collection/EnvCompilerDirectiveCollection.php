@@ -15,7 +15,7 @@ use LDL\Env\Util\Line\Type\Directive\EnvLineDirectiveInterface;
 use LDL\Type\Collection\AbstractTypedCollection;
 use LDL\Validators\InterfaceComplianceValidator;
 
-class EnvCompilerDirectiveCollection extends AbstractTypedCollection implements EnvCompilerDirectiveInterface
+class EnvCompilerDirectiveCollection extends AbstractTypedCollection implements EnvCompilerDirectiveCollectionInterface
 {
     public function __construct(iterable $items = null)
     {
@@ -49,8 +49,8 @@ class EnvCompilerDirectiveCollection extends AbstractTypedCollection implements 
         /**
          * @var EnvCompilerDirectiveInterface $compiler
          */
-        foreach($this as $compiler) {
-            $result = $compiler->compile($result ?? $currentLine, $lines, $curLines, $directive);
+        foreach($this as $_directive) {
+            $result = $_directive->compile($result ?? $currentLine, $lines, $curLines, $directive);
             if(null === $result){
                 return null;
             }

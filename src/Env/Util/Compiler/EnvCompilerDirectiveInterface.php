@@ -10,8 +10,9 @@ namespace LDL\Env\Util\Compiler;
 use LDL\Env\Util\Line\Collection\EnvLineCollectionInterface;
 use LDL\Env\Util\Line\EnvLineInterface;
 use LDL\Env\Util\Line\Type\Directive\EnvLineDirectiveInterface;
+use LDL\Framework\Base\Contracts\Type\ToArrayInterface;
 
-interface EnvCompilerDirectiveInterface
+interface EnvCompilerDirectiveInterface extends ToArrayInterface
 {
     public function compile(
         EnvLineInterface $currentLine,
@@ -19,4 +20,18 @@ interface EnvCompilerDirectiveInterface
         EnvLineCollectionInterface $curLines,
         EnvLineDirectiveInterface $directive
     ) : ?EnvLineInterface;
+
+    /**
+     * Determines if this EnvCompilerDirectiveInterface matches the passed EnvLineDirectiveInterface
+     *
+     * @param EnvLineDirectiveInterface $directive
+     * @return bool
+     */
+    public function matches(EnvLineDirectiveInterface $directive) : bool;
+
+    /**
+     * @param array $options
+     * @return EnvCompilerDirectiveInterface|null
+     */
+    public static function fromOptions(array $options) : ?EnvCompilerDirectiveInterface;
 }

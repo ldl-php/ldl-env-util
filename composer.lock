@@ -12,12 +12,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/pthreat/ldl-file-common.git",
-                "reference": "12d00c6c914fe37bb5a3c532955f331a6666f94e"
+                "reference": "00412906d356c2cd3d8e349a818adc9406d56a0a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/pthreat/ldl-file-common/zipball/12d00c6c914fe37bb5a3c532955f331a6666f94e",
-                "reference": "12d00c6c914fe37bb5a3c532955f331a6666f94e",
+                "url": "https://api.github.com/repos/pthreat/ldl-file-common/zipball/00412906d356c2cd3d8e349a818adc9406d56a0a",
+                "reference": "00412906d356c2cd3d8e349a818adc9406d56a0a",
                 "shasum": ""
             },
             "require": {
@@ -57,7 +57,7 @@
                 "issues": "https://github.com/pthreat/ldl-file-common/issues",
                 "source": "https://github.com/pthreat/ldl-file-common/tree/master"
             },
-            "time": "2021-11-22T13:03:56+00:00"
+            "time": "2021-11-29T11:52:06+00:00"
         },
         {
             "name": "ldl-framework/framework-base",
@@ -65,12 +65,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/pthreat/ldl-framework-base.git",
-                "reference": "b2d2a30178c75ff03ff246cea18891641eebc97d"
+                "reference": "3b88ea7e5ec9dc3d2140710276aa1388cfe5bfb6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/pthreat/ldl-framework-base/zipball/b2d2a30178c75ff03ff246cea18891641eebc97d",
-                "reference": "b2d2a30178c75ff03ff246cea18891641eebc97d",
+                "url": "https://api.github.com/repos/pthreat/ldl-framework-base/zipball/3b88ea7e5ec9dc3d2140710276aa1388cfe5bfb6",
+                "reference": "3b88ea7e5ec9dc3d2140710276aa1388cfe5bfb6",
                 "shasum": ""
             },
             "require": {
@@ -99,7 +99,7 @@
                 "issues": "https://github.com/pthreat/ldl-framework-base/issues",
                 "source": "https://github.com/pthreat/ldl-framework-base/tree/master"
             },
-            "time": "2021-11-23T15:58:32+00:00"
+            "time": "2021-11-29T14:42:30+00:00"
         },
         {
             "name": "ldl-framework/typed-collection",
