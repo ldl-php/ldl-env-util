@@ -26,11 +26,6 @@ class EnvDuplicateVarResolverCompilerDirective implements EnvCompilerDirectiveIn
         $this->action = $action;
     }
 
-    public function getOptions() : array
-    {
-        return [];
-    }
-
     public function compile(
         EnvLineInterface $line,
         EnvLineCollectionInterface $lines,

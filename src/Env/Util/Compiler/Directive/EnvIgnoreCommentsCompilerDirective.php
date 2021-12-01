@@ -22,11 +22,6 @@ class EnvIgnoreCommentsCompilerDirective implements EnvCompilerDirectiveInterfac
         $this->ignore = $ignore;
     }
 
-    public function getOptions() : array
-    {
-        return [];
-    }
-
     public function compile(
         EnvLineInterface $line,
         EnvLineCollectionInterface $lines,

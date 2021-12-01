@@ -24,11 +24,6 @@ class EnvVarCaseTransformCompilerDirective implements EnvCompilerDirectiveInterf
         $this->casing = $casing;
     }
 
-    public function getOptions() : array
-    {
-        return [];
-    }
-
     public function compile(
         EnvLineInterface $line,
         EnvLineCollectionInterface $lines,

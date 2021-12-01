@@ -2,18 +2,37 @@
 
 namespace LDL\Env\Util\Line\Type\Directive\Factory;
 
+use LDL\Env\Util\Compiler\Collection\EnvCompilerDirectiveCollectionInterface;
 use LDL\Env\Util\Line\Type\Directive\EnvLineDirectiveInterface;
 
 interface EnvLineDirectiveFactoryInterface
 {
 
     /**
-     * Creates an EnvLineDirectiveInterface instance from a set of directives
+     * Creates an EnvLineDirectiveInterface start directive from a set of directives
      *
-     * @param bool $isStart
      * @param iterable|null $directives
      * @return EnvLineDirectiveInterface
      */
-    public static function create(bool $isStart, ?iterable $directives) : EnvLineDirectiveInterface;
+    public static function createStart(?iterable $directives) : EnvLineDirectiveInterface;
+
+    /**
+     * Creates an EnvLineDirectiveInterface stop directive
+     *
+     * @return EnvLineDirectiveInterface
+     */
+    public static function createStop() : EnvLineDirectiveInterface;
+
+    /**
+     * Obtains all applicable directives from an EnvLineDirectiveInterface object
+     *
+     * @param EnvLineDirectiveInterface $line
+     * @param iterable|null $directives
+     * @return EnvCompilerDirectiveCollectionInterface
+     */
+    public static function getDirectives(
+        EnvLineDirectiveInterface $line,
+        iterable $directives=null
+    ) : EnvCompilerDirectiveCollectionInterface;
 
 }

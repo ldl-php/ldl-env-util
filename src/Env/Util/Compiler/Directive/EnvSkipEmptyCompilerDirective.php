@@ -22,11 +22,6 @@ class EnvSkipEmptyCompilerDirective implements EnvCompilerDirectiveInterface
         $this->skip = $skip;
     }
 
-    public function getOptions() : array
-    {
-        return [];
-    }
-
     public function compile(
         EnvLineInterface $line,
         EnvLineCollectionInterface $lines,

@@ -25,11 +25,6 @@ class EnvUnknownLineCompilerDirective implements EnvCompilerDirectiveInterface
         $this->action = $action;
     }
 
-    public function getOptions() : array
-    {
-        return [];
-    }
-
     public function compile(
         EnvLineInterface $line,
         EnvLineCollectionInterface $lines,

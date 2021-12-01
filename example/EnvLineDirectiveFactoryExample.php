@@ -4,7 +4,6 @@ require __DIR__.'/../vendor/autoload.php';
 
 use LDL\Env\Util\Compiler\Collection\EnvCompilerDirectiveCollection;
 use LDL\Env\Util\Line\Type\Directive\Factory\EnvLineDirectiveFactory;
-use LDL\Env\Util\Line\Parser\Directive\EnvLineCompilerDirectiveParser;
 
 /**
  * This will contain all directives by default
@@ -18,7 +17,7 @@ foreach($directives as $d){
 }
 
 echo "\nCreate a string from the previous collection of directives:\n\n";
-$directive = EnvLineDirectiveFactory::create($directives);
+$directive = EnvLineDirectiveFactory::createStart($directives);
 
 dump(get_class($directive));
 
@@ -33,6 +32,6 @@ echo "Remove first directive (Skip empty):\n\n";
 $directives->removeByKey(0);
 
 echo "Recreate directive and dump as string, as we removed the first directive, skip empty must not be present\n";
-$directive = EnvLineDirectiveFactory::create($directives);
+$directive = EnvLineDirectiveFactory::createStart($directives);
 
 dump((string) $directive);

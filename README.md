@@ -141,28 +141,28 @@ foreach($lines as $line){
 
 ### Compiler
 
+Main functionality of the compiler can be thought as "Take a bunch of lines and apply some transformations to them"
+
 The EnvCompiler class has a compile method which takes in an EnvLineCollection, this collection ideally will be the 
 return value of the previously parsed strings/files.
 
 ```php
-$compiler = new EnvCompiler();
-
 //See parser example above
 $parsedLines = $parser->parse();
 
+$compiler = new EnvCompiler();
 $compiled = $compiler->compiler($parsedLines);
 
 foreach($compiled as $line){
    echo "$line\n";
 }
-
 ```
 
 Output:
 
 ```text
-#COMMENT LINE"
-App_Admin_URL=http://localhost:8080"
+#COMMENT LINE
+App_Admin_URL=http://localhost:8080
 MAINTENANCE_MODE=0"
 ```
 
@@ -170,9 +170,111 @@ The EnvCompiler class uses an EnvCompilerDirectiveCollection, each item on this 
 EnvCompilerDirectiveInterface. The collection can be passed to EnvCompiler as a constructor argument 
 (enabling you to add a custom set of compiler directives) or a default containing the core compilers will be created.
 
-### Default core compiler directives:
+### Directives
 
-- EnvSkipEmptyLineCompilerDirective
+Compiler directives allow you to apply transforms to variables, throw exceptions when a duplicate variable name has 
+been found, skipping empty lines, etc.
+
+### Creating directives
+
+There are different ways to create a directive, the first and most simple is to create it from a string and then
+parse said string directive to obtain an object.
+
+#### Directive from string
+
+```php
+<?php declare(strict_types=1);
+
+use LDL\Env\Util\Line\Parser\Directive\EnvLineCompilerDirectiveParser;
+
+$myDirective = '!LDL-COMPILER START={"VAR_NAME_CASE":null,"IGNORE":false,"COMMENTS":false,"ONDUPLICATEVAR":"throw","ONUNKNOWLINE":"discard"}';
+$parser = new EnvLineCompilerDirectiveParser();
+
+//Create the directive from string
+$directive = $parser->createFromString($myDirective);
+``` 
+
+#### EnvLineDirective from custom directives
+
+You can also create a directive from objects
+
+```php
+<?php declare(strict_types=1);
+
+use LDL\Env\Util\Compiler\Collection\EnvCompilerDirectiveCollection;
+use LDL\Env\Util\Compiler\Directive\EnvVarCaseTransformCompilerDirective;
+use LDL\Env\Util\Line\Type\Directive\Factory\EnvLineDirectiveFactory;
+use LDL\Env\Util\Compiler\Directive\EnvSkipEmptyCompilerDirective;
+
+$directives = new EnvCompilerDirectiveCollection([
+    new EnvVarCaseTransformCompilerDirective(
+        EnvVarCaseTransformCompilerDirective::CASE_UPPER
+    ),
+    new EnvSkipEmptyCompilerDirective()
+]);
+
+$directive = EnvLineDirectiveFactory::createStart($directives);
+
+echo $directive->getString();
+```
+
+Output of the previous code will be:
+
+```text
+!LDL-COMPILER START={"VAR_NAME_CASE":"UPPER","SKIP_EMPTY":true}
+```
+
+### Obtaining directives from a directive object
+
+Last case is to obtain available directives as objects from an EnvLineDirectiveInterface object
+
+```php
+<?php declare(strict_types=1);
+
+use LDL\Env\Util\Line\Parser\Directive\EnvLineCompilerDirectiveParser;
+use LDL\Env\Util\Line\Type\Directive\Factory\EnvLineDirectiveFactory;
+
+$myDirective = '!LDL-COMPILER START={"COMMENTS":false,"ONDUPLICATEVAR":"throw","ONUNKNOWLINE":"discard"}';
+$parser = new EnvLineCompilerDirectiveParser();
+
+//Create the directive from string
+$directive = $parser->createFromString($myDirective);
+
+$directives = EnvLineDirectiveFactory::getDirectives($directive);
+
+foreach($directives as $directive){
+    dump(get_class($directive));
+    dump($directive->toArray());
+}
+
+$directive = EnvLineDirectiveFactory::createStart($directives);
+
+echo $directive->getString();
+```
+
+Output:
+
+```text
+^ "LDL\Env\Util\Compiler\Directive\EnvIgnoreCommentsCompilerDirective"
+^ array:1 [
+  "COMMENTS" => false
+]
+^ "LDL\Env\Util\Compiler\Directive\EnvDuplicateVarResolverCompilerDirective"
+^ array:1 [
+  "ONDUPLICATEVAR" => "throw"
+]
+^ "LDL\Env\Util\Compiler\Directive\EnvUnknownLineCompilerDirective"
+^ array:1 [
+  "ONUNKNOWLINE" => "discard"
+]
+
+!LDL-COMPILER START={"COMMENTS":false,"ONDUPLICATEVAR":"throw","ONUNKNOWLINE":"discard"}
+
+```
+
+#### Default core compiler directives:
+
+- EnvSkipEmptyCompilerDirective
 
 Skips empty lines 
 

@@ -11,7 +11,19 @@ use LDL\Env\Util\Line\Type\Directive\EnvLineDirectiveInterface;
 final class EnvLineDirectiveFactory implements EnvLineDirectiveFactoryInterface
 {
 
-    public static function create(bool $isStart, ?iterable $directives) : EnvLineDirectiveInterface
+    public static function createStop() : EnvLineDirectiveInterface
+    {
+        return new EnvLineDirective(
+            sprintf(
+                '%s %s',
+                EnvLineDirectiveInterface::ENV_COMPILER_STRING,
+                EnvLineDirectiveInterface::ENV_COMPILER_START,
+            ),
+            false
+        );
+    }
+
+    public static function createStart(?iterable $directives) : EnvLineDirectiveInterface
     {
         $directives = new EnvCompilerDirectiveCollection($directives);
         $return = [];
