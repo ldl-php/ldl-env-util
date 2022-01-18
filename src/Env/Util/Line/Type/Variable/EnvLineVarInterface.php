@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace LDL\Env\Util\Line\Type\Variable;
 
@@ -6,21 +8,11 @@ use LDL\Env\Util\Line\EnvLineInterface;
 
 interface EnvLineVarInterface extends EnvLineInterface
 {
-    /**
-     * @return string|null
-     */
     public function getPrefix(): ?string;
 
-    /**
-     * @param bool $withPrefix
-     * @return string
-     */
-    public function getVar(bool $withPrefix = true) : string;
+    public function getPrefixSeparator(): ?string;
 
-    /**
-     * @param bool $cast
-     * @return mixed
-     */
-    public function getValue(bool $cast=true);
+    public function getVar(): string;
 
+    public function getValue(): string;
 }

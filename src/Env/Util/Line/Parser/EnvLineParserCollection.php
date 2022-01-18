@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace LDL\Env\Util\Line\Parser;
 
@@ -21,15 +23,15 @@ class EnvLineParserCollection extends AbstractTypedCollection implements EnvLine
 
     public function __construct(iterable $items = null)
     {
-        /**
+        /*
          * If no items are passed, use default line parsers
          */
-        if(null  === $items){
+        if (null === $items) {
             $items = [
                 new EnvLineCommentParser(),
                 new EnvLineCompilerDirectiveParser(),
                 new EnvEmptyLineParser(),
-                new EnvLineVarParser()
+                new EnvLineVarParser(),
             ];
         }
 
@@ -42,22 +44,22 @@ class EnvLineParserCollection extends AbstractTypedCollection implements EnvLine
             ->getChainItems()
             ->appendMany([
                 new IntegerValidator(),
-                new UniqueValidator()
+                new UniqueValidator(),
             ])
             ->lock();
 
         parent::__construct($items);
     }
 
-    public function parse(string $line, string $prefix=null): ?EnvLineInterface
+    public function parse(string $line, string $prefix = null, string $prefixSeparator = null): ?EnvLineInterface
     {
         /**
          * @var EnvLineParserInterface $parser
          */
-        foreach($this as $parser){
-            $env = $parser->createFromString($line, $prefix);
+        foreach ($this as $parser) {
+            $env = $parser->createFromString($line, $prefix, $prefixSeparator);
 
-            if(null === $env){
+            if (null === $env) {
                 continue;
             }
 

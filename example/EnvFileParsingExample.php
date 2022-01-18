@@ -1,9 +1,12 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 require __DIR__.'/../vendor/autoload.php';
 
-use LDL\Env\Util\File\Parser\EnvFileParser;
 use LDL\Env\Util\Compiler\EnvCompiler;
+use LDL\Env\Util\File\Parser\EnvFileParser;
+use LDL\Env\Util\Loader\EnvLoader;
 use LDL\File\Collection\ReadableFileCollection;
 use LDL\Framework\Base\Collection\CallableCollection;
 
@@ -15,33 +18,39 @@ $files = new ReadableFileCollection([
 
 $parser = new EnvFileParser(null,
     false,
-    null,
-    (new CallableCollection())->append(static function($file){
+    (new CallableCollection())->append(static function ($file) {
         echo "$file ...\n";
     })
 );
+
 $compiler = new EnvCompiler();
 
 $file = sprintf('%s/%s', __DIR__, '.env-compiled');
 
-try{
+try {
     echo "Parse env files:\n";
 
     $lines = $parser->parse($files);
 
     echo "\n";
 
-    foreach($compiler->compile($lines) as $line){
+    $compiled = $compiler->compile($lines);
+
+    foreach ($compiled as $line) {
         echo "$line\n";
     }
 
-}catch(\Exception $e) {
+    /*
+     * Load the lines into environment
+     */
+    EnvLoader::load($compiled);
 
+    dump(getenv('APPLICATION_DEV_MODE'));
+} catch (\Exception $e) {
     echo "[ Build failed! ]\n";
     echo $e->getMessage()."\n";
 
     echo $e->getTraceAsString()."\n";
+
     return;
-
 }
-

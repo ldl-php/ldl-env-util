@@ -5,14 +5,14 @@ transforms or ignore certain lines, you can also extend it to add custom transfo
 
 ## Main ENV file concept
 
-A .env file is a file which is used to specify different configurations for different development environments, 
+A .env file is a file which is used to specify different configurations for different code environments, 
 production/staging/development. These files are usually not committed in git and are comprised usually of:
 
 - Comments
 - Variables (VAR=VALUE)
 - Empty lines
 
-They contain vital settings for your application to work in each environment.
+They contain vital settings for your application to work on each environment.
 
 Examples of some useful use cases of .env:
 
