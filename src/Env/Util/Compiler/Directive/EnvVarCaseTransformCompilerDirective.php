@@ -43,19 +43,19 @@ class EnvVarCaseTransformCompilerDirective implements EnvCompilerDirectiveInterf
             case self::CASE_UPPER:
                 return new EnvLineVar(
                     $line->getString(),
-                    strtoupper($line->getVar(false)),
+                    strtoupper($line->getVar()),
                     $line->getValue(),
-                    strtoupper($line->getPrefix()),
-                    strtoupper($line->getPrefixSeparator())
+                    null === $line->getPrefix() ? null : strtoupper($line->getPrefix()),
+                    null === $line->getPrefixSeparator() ? null : strtoupper($line->getPrefixSeparator())
                 );
                 break;
             case self::CASE_LOWER:
                 return new EnvLineVar(
                     $line->getString(),
-                    strtolower($line->getVar(false)),
+                    strtolower($line->getVar()),
                     $line->getValue(),
-                    strtolower($line->getPrefix()),
-                    strtoupper($line->getPrefixSeparator())
+                    null === $line->getPrefix() ? null : strtolower($line->getPrefix()),
+                    null === $line->getPrefixSeparator() ? null : strtolower($line->getPrefixSeparator())
                 );
                 break;
 

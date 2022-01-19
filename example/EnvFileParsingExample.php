@@ -6,7 +6,6 @@ require __DIR__.'/../vendor/autoload.php';
 
 use LDL\Env\Util\Compiler\EnvCompiler;
 use LDL\Env\Util\File\Parser\EnvFileParser;
-use LDL\Env\Util\Loader\EnvLoader;
 use LDL\File\Collection\ReadableFileCollection;
 use LDL\Framework\Base\Collection\CallableCollection;
 
@@ -40,11 +39,13 @@ try {
         echo "$line\n";
     }
 
+    echo "\nLoad .env lines into environment ...\n";
     /*
      * Load the lines into environment
      */
-    EnvLoader::load($compiled);
+    $compiled->load();
 
+    echo "\nGet value of APPLICATION_DEV_MODE from environment ... \n\n";
     dump(getenv('APPLICATION_DEV_MODE'));
 } catch (\Exception $e) {
     echo "[ Build failed! ]\n";

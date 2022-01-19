@@ -46,7 +46,7 @@ final class EnvCompiler implements EnvCompilerInterface
 
         $this->startDirective = $startDirective ?? EnvLineDirectiveFactory::createStart([
             new EnvPrefixLengthCompilerDirective(1),
-            new EnvVarCaseTransformCompilerDirective(),
+            new EnvVarCaseTransformCompilerDirective(EnvVarCaseTransformCompilerDirective::CASE_UPPER),
         ]);
 
         $this->beforeCompile = $onBeforeCompile;

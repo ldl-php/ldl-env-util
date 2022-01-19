@@ -1,9 +1,12 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace LDL\Env\Util\Line\Collection;
 
 use LDL\Env\Util\Line\EnvLineInterface;
 use LDL\Env\Util\Line\Type\Variable\EnvLineVarInterface;
+use LDL\Env\Util\Loader\EnvLoader;
 use LDL\Framework\Base\Collection\Contracts\CollectionInterface;
 use LDL\Framework\Helper\IterableHelper;
 use LDL\Type\Collection\AbstractTypedCollection;
@@ -35,7 +38,7 @@ class EnvLineCollection extends AbstractTypedCollection implements EnvLineCollec
             ->getChainItems()
             ->appendMany([
                 new IntegerValidator(),
-                new UniqueValidator()
+                new UniqueValidator(),
             ])
             ->lock();
 
@@ -44,7 +47,7 @@ class EnvLineCollection extends AbstractTypedCollection implements EnvLineCollec
 
     public function append($line, $key = null): CollectionInterface
     {
-        if($line instanceof EnvLineVarInterface){
+        if ($line instanceof EnvLineVarInterface) {
             $this->vars[$line->getVar()] = $line->getValue();
         }
 
@@ -55,25 +58,25 @@ class EnvLineCollection extends AbstractTypedCollection implements EnvLineCollec
     {
         $line = $this->get($key);
 
-        if($line instanceof EnvLineVarInterface){
+        if ($line instanceof EnvLineVarInterface) {
             unset($this->vars[$line->getVar()]);
         }
 
         return parent::remove($key);
     }
 
-    public function getVar(string $name) : ?EnvLineInterface
+    public function getVar(string $name): ?EnvLineInterface
     {
-        if(!array_key_exists($name, $this->vars)){
+        if (!array_key_exists($name, $this->vars)) {
             return null;
         }
 
-        foreach($this as $line){
+        foreach ($this as $line) {
             if (!$line instanceof EnvLineVarInterface) {
                 continue;
             }
 
-            if($line->getVar() === $name){
+            if ($line->getVar() === $name) {
                 return $line;
             }
         }
@@ -95,7 +98,7 @@ class EnvLineCollection extends AbstractTypedCollection implements EnvLineCollec
                 continue;
             }
 
-            if($line->getVar() === $variable) {
+            if ($line->getVar() === $variable) {
                 $count++;
             }
         }
@@ -103,40 +106,43 @@ class EnvLineCollection extends AbstractTypedCollection implements EnvLineCollec
         return $count;
     }
 
-    public function replaceVar(EnvLineVarInterface $var) : EnvLineCollectionInterface
+    public function replaceVar(EnvLineVarInterface $var): EnvLineCollectionInterface
     {
-
-        $this->replaceByCallback(static function($v, $k) use ($var){
+        $this->replaceByCallback(static function ($v, $k) use ($var) {
             return $v->getVar() === $var->getVar();
         }, $var);
 
         return $this;
     }
 
-    public function merge(EnvLineCollectionInterface $lines) : EnvLineCollectionInterface
+    public function merge(EnvLineCollectionInterface $lines): EnvLineCollectionInterface
     {
-        foreach($lines as $line){
+        foreach ($lines as $line) {
             $this->append($line);
         }
 
         return $this;
     }
 
-    public function getStringCollection() : StringCollection
+    public function load(): void
     {
-        return new StringCollection(IterableHelper::map($this, static function($v){
-           return (string) $v;
+        EnvLoader::load($this);
+    }
+
+    public function getStringCollection(): StringCollection
+    {
+        return new StringCollection(IterableHelper::map($this, static function ($v) {
+            return (string) $v;
         }));
     }
 
     public function toString(): string
     {
-        return implode(\PHP_EOL,\iterator_to_array($this));
+        return implode(\PHP_EOL, \iterator_to_array($this));
     }
 
     public function __toString(): string
     {
         return $this->toString();
     }
-
 }
