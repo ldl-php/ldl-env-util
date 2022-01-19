@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace LDL\Env\Util\Compiler\Directive;
 
@@ -11,16 +13,17 @@ use LDL\Env\Util\Line\Type\Variable\EnvLineVarInterface;
 
 class EnvVarCaseTransformCompilerDirective implements EnvCompilerDirectiveInterface
 {
-    public const DIRECTIVE='VAR_NAME_CASE';
-    public const CASE_UPPER='UPPER';
-    public const CASE_LOWER='LOWER';
+    public const DIRECTIVE = 'VAR_NAME_CASE';
+    public const CASE_UPPER = 'UPPER';
+    public const CASE_LOWER = 'LOWER';
 
     /**
      * @var string
      */
     private $casing;
 
-    public function __construct(string $casing=null){
+    public function __construct(string $casing = null)
+    {
         $this->casing = $casing;
     }
 
@@ -29,41 +32,42 @@ class EnvVarCaseTransformCompilerDirective implements EnvCompilerDirectiveInterf
         EnvLineCollectionInterface $lines,
         EnvLineCollectionInterface $curLines,
         EnvLineDirectiveInterface $directive
-    ): ?EnvLineInterface
-    {
+    ): ?EnvLineInterface {
         $options = array_change_key_case($directive->getCompilerOptions(), \CASE_UPPER);
 
-        if(!$line instanceof EnvLineVarInterface || !array_key_exists(self::DIRECTIVE, $options)){
+        if (!$line instanceof EnvLineVarInterface || !array_key_exists(self::DIRECTIVE, $options)) {
             return $line;
         }
 
-        switch($options[self::DIRECTIVE]){
+        switch ($options[self::DIRECTIVE]) {
             case self::CASE_UPPER:
                 return new EnvLineVar(
                     $line->getString(),
-                    strtoupper($line->getVar(false)),
-                    (string)$line->getValue(false),
-                    strtoupper($line->getPrefix())
+                    strtoupper($line->getVar()),
+                    $line->getValue(),
+                    null === $line->getPrefix() ? null : strtoupper($line->getPrefix()),
+                    null === $line->getPrefixSeparator() ? null : strtoupper($line->getPrefixSeparator())
                 );
                 break;
             case self::CASE_LOWER:
                 return new EnvLineVar(
                     $line->getString(),
-                    strtolower($line->getVar(false)),
-                    (string)$line->getValue(false),
-                    strtolower($line->getPrefix())
+                    strtolower($line->getVar()),
+                    $line->getValue(),
+                    null === $line->getPrefix() ? null : strtolower($line->getPrefix()),
+                    null === $line->getPrefixSeparator() ? null : strtolower($line->getPrefixSeparator())
                 );
                 break;
 
             default:
                 return $line;
         }
-
     }
+
     public static function fromOptions(array $options): ?EnvCompilerDirectiveInterface
     {
         $options = array_change_key_case($options, \CASE_UPPER);
-        if(!array_key_exists(self::DIRECTIVE, $options)){
+        if (!array_key_exists(self::DIRECTIVE, $options)) {
             return null;
         }
 
@@ -73,14 +77,14 @@ class EnvVarCaseTransformCompilerDirective implements EnvCompilerDirectiveInterf
     public function matches(EnvLineDirectiveInterface $directive): bool
     {
         $options = array_change_key_case($directive->getCompilerOptions(), \CASE_UPPER);
+
         return array_key_exists(self::DIRECTIVE, $options);
     }
 
     public function toArray(bool $useKeys = null): array
     {
         return [
-          self::DIRECTIVE => $this->casing
+          self::DIRECTIVE => $this->casing,
         ];
     }
-
 }

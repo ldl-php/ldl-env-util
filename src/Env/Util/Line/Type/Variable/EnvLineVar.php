@@ -1,9 +1,10 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace LDL\Env\Util\Line\Type\Variable;
 
 use LDL\Env\Util\Line\Type\AbstractEnvLine;
-use Symfony\Component\String\UnicodeString;
 
 class EnvLineVar extends AbstractEnvLine implements EnvLineVarInterface
 {
@@ -18,68 +19,37 @@ class EnvLineVar extends AbstractEnvLine implements EnvLineVarInterface
     private $value;
 
     /**
-     * @var mixed
+     * @var string|null
      */
-    private $castedValue;
+    private $prefix;
 
     /**
      * @var string|null
      */
-    private $prefix;
+    private $prefixSeparator;
 
     public function __construct(
         string $string,
         string $var,
         string $value,
-        string $prefix = ''
-    )
-    {
+        string $prefix = null,
+        string $prefixSeparator = null
+    ) {
         parent::__construct($string);
         $this->var = $var;
-        $this->value = trim($value,"\r\n");
+        $this->value = trim($value, "\r\n");
         $this->prefix = $prefix;
+        $this->prefixSeparator = $prefixSeparator;
     }
 
-    public function getVar(bool $withPrefix = true) : string
+    public function getVar(): string
     {
-        return sprintf('%s%s', $withPrefix ? $this->prefix : '', $this->var);
+        return $this->var;
     }
 
-    public function getValue(bool $cast=true)
+    public function getValue(): string
     {
-        if(false === $cast){
-            return $this->value;
-        }
-
-        if(false === preg_match('#^\(.*\)#', $this->value, $matches)){
-            return $this->value;
-        }
-
-
-        if(count($matches) === 0){
-            return $this->value;
-        }
-
-        if(null !== $this->castedValue){
-            return $this->castedValue;
-        }
-
-        $castTo = $matches[0];
-        $castValue = mb_substr($this->value, mb_strlen($castTo));
-
-        switch($castTo){
-            case '(int)':
-                return $this->castedValue = (int)$castValue;
-
-            case '(bool)':
-                return $this->castedValue = (bool)$castValue;
-
-            case '(double)':
-            case '(float)':
-                return $this->castedValue = (double)$castValue;
-        }
-
-        return $this->castedValue = $castValue;
+        return $this->value;
     }
 
     public function getPrefix(): ?string
@@ -87,8 +57,13 @@ class EnvLineVar extends AbstractEnvLine implements EnvLineVarInterface
         return $this->prefix;
     }
 
+    public function getPrefixSeparator(): ?string
+    {
+        return $this->prefixSeparator;
+    }
+
     public function __toString(): string
     {
-        return sprintf('%s=%s', $this->getVar(true), $this->getValue());
+        return sprintf('%s%s%s=%s', $this->getPrefix(), $this->getPrefixSeparator(), $this->getVar(), $this->getValue());
     }
 }

@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace LDL\Env\Util\Line\Collection;
 
@@ -10,40 +12,24 @@ use LDL\Type\Collection\Types\String\StringCollection;
 
 interface EnvLineCollectionInterface extends TypedCollectionInterface, ToStringInterface
 {
-    /**
-     * @param string $name
-     * @return EnvLineInterface|null
-     */
-    public function getVar(string $name) : ?EnvLineInterface;
+    public function getVar(string $name): ?EnvLineInterface;
 
-    /**
-     * @param string $variable
-     * @return bool
-     */
     public function hasVar(string $variable): bool;
 
-    /**
-     * @param string $variable
-     * @return int
-     */
-    public function countVar(string $variable) : int;
+    public function countVar(string $variable): int;
+
+    public function replaceVar(EnvLineVarInterface $var): EnvLineCollectionInterface;
 
     /**
-     * @param EnvLineVarInterface $var
-     * @return EnvLineCollectionInterface
+     * Merges a line collection inside of another collection.
      */
-    public function replaceVar(EnvLineVarInterface $var) : EnvLineCollectionInterface;
+    public function merge(EnvLineCollectionInterface $lines): EnvLineCollectionInterface;
+
+    public function getStringCollection(): StringCollection;
 
     /**
-     * Merges a line collection inside of another collection
-     *
-     * @param EnvLineCollectionInterface $lines
-     * @return EnvLineCollectionInterface
+     * Filters EnvLineVarInterface objects and loads them into the system by using
+     * $_ENV super global and putenv.
      */
-    public function merge(EnvLineCollectionInterface $lines) : EnvLineCollectionInterface;
-
-    /**
-     * @return StringCollection
-     */
-    public function getStringCollection() : StringCollection;
+    public function load(): void;
 }

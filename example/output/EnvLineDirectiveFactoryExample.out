@@ -6,6 +6,7 @@ Create collection containing default directives (with default parameters):
 "LDL\Env\Util\Compiler\Directive\EnvIgnoreCommentsCompilerDirective"
 "LDL\Env\Util\Compiler\Directive\EnvDuplicateVarResolverCompilerDirective"
 "LDL\Env\Util\Compiler\Directive\EnvUnknownLineCompilerDirective"
+"LDL\Env\Util\Compiler\Directive\EnvPrefixLengthCompilerDirective"
 
 Create a string from the previous collection of directives:
 
@@ -13,10 +14,10 @@ Create a string from the previous collection of directives:
 
 Print the directive:
 
-"!LDL-COMPILER START={"SKIP_EMPTY":true,"VAR_NAME_CASE":null,"IGNORE":false,"COMMENTS":false,"ONDUPLICATEVAR":"throw","ONUNKNOWLINE":"discard"}"
+"!LDL-COMPILER START={"SKIP_EMPTY":true,"VAR_NAME_CASE":null,"IGNORE":false,"COMMENTS":false,"ONDUPLICATEVAR":"throw","ONUNKNOWLINE":"discard","PREFIX_LENGTH":1}"
 Obtain available directives from directive as objects:
 
 Remove first directive (Skip empty):
 
 Recreate directive and dump as string, as we removed the first directive, skip empty must not be present
-"!LDL-COMPILER START={"VAR_NAME_CASE":null,"IGNORE":false,"COMMENTS":false,"ONDUPLICATEVAR":"throw","ONUNKNOWLINE":"discard"}"
+"!LDL-COMPILER START={"VAR_NAME_CASE":null,"IGNORE":false,"COMMENTS":false,"ONDUPLICATEVAR":"throw","ONUNKNOWLINE":"discard","PREFIX_LENGTH":1}"
