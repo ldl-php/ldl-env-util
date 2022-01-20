@@ -57,7 +57,7 @@ class EnvFileParser implements EnvFileParserInterface
     /**
      * {@inheritdoc}
      */
-    public function parse(iterable $files, ?string $file = null): EnvLineCollectionInterface
+    public function parse(iterable $files, bool $prefixDirectory = true): EnvLineCollectionInterface
     {
         if (!$files instanceof ReadableFileCollection) {
             $files = new ReadableFileCollection($files);
@@ -81,8 +81,8 @@ class EnvFileParser implements EnvFileParserInterface
                 $currentFileLines->appendMany(
                     $this->parser->parse(
                             $file->getLines(),
-                            dirname($file->getPath()),
-                            \DIRECTORY_SEPARATOR
+                            $prefixDirectory ? dirname($file->getPath()) : null,
+                            $prefixDirectory ? \DIRECTORY_SEPARATOR : null
                         )
                 );
 
