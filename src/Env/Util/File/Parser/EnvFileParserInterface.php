@@ -15,5 +15,5 @@ interface EnvFileParserInterface
      *
      * @throws ReadEnvFileException
      */
-    public function parse(iterable $files, ?string $file): EnvLineCollectionInterface;
+    public function parse(iterable $files, bool $prefixDirectory): EnvLineCollectionInterface;
 }
