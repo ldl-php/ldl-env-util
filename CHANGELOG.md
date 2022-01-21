@@ -12,6 +12,7 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - feature/1201432034065231 - Add before/after parse before/after compile callable collections
 - feature/1201447695082332 - Add env line directive factory
 - feature/1201675079001777 - Add new EnvPrefixLengthCompilerDirective
+- feature/1201698987280922 - Add EnvLoader::loadFile method
 
 ### Changed
 
