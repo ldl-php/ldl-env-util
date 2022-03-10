@@ -16,5 +16,6 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ### Changed
 
+- fix/1201949094431922 - Add better exceptions to EnvFileParser
 - fix/1200732308074785 - Fix collections by adding getChainItems
 - fix/1201692512287210 - Add $prefixDirectory parameter to EnvFileParser::parse
