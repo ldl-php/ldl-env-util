@@ -67,6 +67,10 @@ class EnvFileParser implements EnvFileParserInterface
 
         $return = new EnvLineCollection();
 
+        if (0 === count($files)) {
+            return $return;
+        }
+
         /**
          * Parse each env file.
          *
@@ -78,11 +82,17 @@ class EnvFileParser implements EnvFileParserInterface
                     $this->beforeParse->call($file, $files, $return, $this);
                 }
 
+                $lines = $file->getLines();
+
+                if (0 === count($lines)) {
+                    continue;
+                }
+
                 $currentFileLines = new EnvLineCollection();
 
                 $currentFileLines->appendMany(
                     $this->parser->parse(
-                        $file->getLines(),
+                        $lines,
                         $prefixDirectory ? dirname($file->getPath()) : null,
                         $prefixDirectory ? \DIRECTORY_SEPARATOR : null
                     )
