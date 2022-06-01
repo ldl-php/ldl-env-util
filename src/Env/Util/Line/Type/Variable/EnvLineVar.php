@@ -42,9 +42,9 @@ class EnvLineVar extends AbstractEnvLine implements EnvLineVarInterface
         $this->prefixSeparator = $prefixSeparator;
     }
 
-    public function getVar(): string
+    public function getVar(bool $prefix = false): string
     {
-        return $this->var;
+        return $prefix ? sprintf('%s%s%s', $this->getPrefix(), $this->getPrefixSeparator(), $this->getVar()) : $this->var;
     }
 
     public function getValue(): string
@@ -64,6 +64,6 @@ class EnvLineVar extends AbstractEnvLine implements EnvLineVarInterface
 
     public function __toString(): string
     {
-        return sprintf('%s%s%s=%s', $this->getPrefix(), $this->getPrefixSeparator(), $this->getVar(), $this->getValue());
+        return sprintf('%s=%s', $this->getVar(true), $this->getValue());
     }
 }

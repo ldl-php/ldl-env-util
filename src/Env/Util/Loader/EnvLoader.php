@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace LDL\Env\Util\Loader;
 
+use LDL\Env\Util\File\Exception\ReadEnvFileException;
 use LDL\Env\Util\File\Parser\EnvFileParser;
 use LDL\Env\Util\Line\Collection\EnvLineCollectionInterface;
 use LDL\Env\Util\Line\Type\Variable\EnvLineVarInterface;
@@ -17,16 +18,16 @@ final class EnvLoader
             return $l instanceof EnvLineVarInterface;
         });
 
-        IterableHelper::map($lines, static function ($l) {
+        IterableHelper::map($lines, static function (EnvLineVarInterface $l) {
             putenv((string) $l);
-            $_ENV[$l->getVar()] = $l->getValue();
+            $_ENV[$l->getVar(true)] = $l->getValue();
         });
     }
 
     /**
      * This method must be used with an .env file which has already been compiled.
      *
-     * @throws \LDL\Env\Util\File\Exception\ReadEnvFileException
+     * @throws ReadEnvFileException
      */
     public static function loadFile(string $file): void
     {

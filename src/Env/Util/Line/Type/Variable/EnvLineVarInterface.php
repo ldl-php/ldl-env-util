@@ -12,7 +12,7 @@ interface EnvLineVarInterface extends EnvLineInterface
 
     public function getPrefixSeparator(): ?string;
 
-    public function getVar(): string;
+    public function getVar(bool $prefix): string;
 
     public function getValue(): string;
 }
