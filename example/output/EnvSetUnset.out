@@ -1,0 +1,4 @@
+Set ENV variable TEST=1
+"1"
+Unset ENV variable TEST
+null

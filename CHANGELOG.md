@@ -8,6 +8,7 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ### Added
 
+- feature/1202435910307919 - Track loaded env files
 - feature/1201177059252669 - Refactor env parsing / Add documentation
 - feature/1201432034065231 - Add before/after parse before/after compile callable collections
 - feature/1201447695082332 - Add env line directive factory
