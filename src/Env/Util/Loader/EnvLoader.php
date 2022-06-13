@@ -34,8 +34,15 @@ final class EnvLoader
      *
      * @throws ReadEnvFileException
      */
-    public static function loadFile(string $file): void
+    public static function loadFile(string $file, bool $cache = true): void
     {
+        /*
+         * If the file was previously loaded and cache is enabled, do not load the file again.
+         */
+        if ($cache && array_key_exists($file, self::$loaded)) {
+            return;
+        }
+
         try {
             self::load(
                 (new EnvFileParser(null, false))
